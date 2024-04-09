@@ -1,1 +1,23 @@
+# Gradle related
+.gradle/
+build/
 
+# executable jar file.
+*.jar
+
+# IntelliJ files.
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# DB
+.DS_Store
+
+# Dev property files.
+application*.yml
+application*.properties
+
+# Logs
+*.log
+bin
