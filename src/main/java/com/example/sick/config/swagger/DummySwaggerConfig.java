@@ -1,4 +1,4 @@
 package com.example.sick.config.swagger;
 
-public class DummySwagger {
+public class DummySwaggerConfig {
 }
