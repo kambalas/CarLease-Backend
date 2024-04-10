@@ -1,24 +1,23 @@
 package com.example.sick.api.controller;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.sick.service.EmailService;
 
 @RestController
 public class EmailController {
 
-    private final EmailService gMailer;
+    private final EmailService mailer;
 
     public EmailController() throws Exception {
-        this.gMailer = new EmailService();
+        this.mailer = new EmailService();
     }
 
-    @PostMapping("/sendEmail")
+    @GetMapping("/sendEmail")
     public String sendEmail() {
         try {
-            gMailer.sendMail("Tarzanas", "Ka metu ta pataikau");
+            mailer.sendMail("Tarzanas", "Ka metu ta pataikau");
             return "Email sent successfully!";
         } catch (Exception e) {
             e.printStackTrace();
