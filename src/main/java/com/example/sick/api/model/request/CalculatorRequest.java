@@ -8,7 +8,7 @@ public record CalculatorRequest(
         int period,
         BigDecimal downPayment,
         int residualValuePercentage,
-        Boolean isEcoFriendly
+        boolean isEcoFriendly
 
 ) {
 }
