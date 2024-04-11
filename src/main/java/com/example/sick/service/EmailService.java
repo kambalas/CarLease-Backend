@@ -40,6 +40,7 @@ public class EmailService {
                 .setApplicationName("Test Mailer")
                 .build();
     }
+
     private static Credential getCredentials(final NetHttpTransport httpTransport, GsonFactory jsonFactory)
             throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailService.class.getResourceAsStream("/client_secret_865329521321-gslgitmmdj1jvmof4piq44ehb1je16l8.apps.googleusercontent.com.json")));
@@ -54,7 +55,7 @@ public class EmailService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public void sendMail(String recipient,String subject, String message) throws Exception {
+    public void sendMail(String recipient, String subject, String message) throws Exception {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
@@ -84,5 +85,6 @@ public class EmailService {
         }
     }
 
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+    }
 }
