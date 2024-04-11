@@ -54,12 +54,12 @@ public class EmailService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public void sendMail(String subject, String message) throws Exception {
+    public void sendMail(String recipient,String subject, String message) throws Exception {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
         email.setFrom(new InternetAddress(TEST_EMAIL));
-        email.addRecipient(TO, new InternetAddress("tlizingas@gmail.com"));
+        email.addRecipient(TO, new InternetAddress(recipient));
         email.setSubject(subject);
         email.setText(message);
 
