@@ -2,6 +2,8 @@ package com.example.sick.service;
 
 import com.example.sick.api.model.request.CalculatorRequest;
 import com.example.sick.api.model.response.CalculatorResponse;
+import com.example.sick.domain.CalculatorDAOResponse;
+import com.example.sick.repository.CalculatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +11,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Service
-public class CalculatorServiceImpl {
+public class CalculatorService {
+
+    private final CalculatorRepository calculatorRepository;
+
+    @Autowired
+    public CalculatorService(CalculatorRepository calculatorRepository) {
+        this.calculatorRepository = calculatorRepository;
+    }
 
     public CalculatorResponse calculateMonthlyPayment(CalculatorRequest calculatorRequest) {
 
-//        BigDecimal interestRate = BigDecimal.valueOf(calculatorRequest.isEcoFriendly() ?
-//                calculatorService.findInterestRateByCarType("eco-friendly") :
-//                calculatorService.findInterestRateByCarType("regular"));
+        CalculatorDAOResponse calculatorDAOResponse = calculatorRepository.selectAllInterestRate();
 
-        BigDecimal interestRate = BigDecimal.valueOf(5);
+        BigDecimal interestRate = BigDecimal.valueOf(calculatorRequest.isEcoFriendly() ?
+                calculatorDAOResponse.eco() :
+                calculatorDAOResponse.regular());
+
+  //      BigDecimal interestRate = BigDecimal.valueOf(5);
 
         BigDecimal rate = interestRate.divide(BigDecimal.valueOf(100));
 
@@ -39,9 +50,5 @@ public class CalculatorServiceImpl {
         BigDecimal percentage = BigDecimal.valueOf(residualValuePercentage).divide(BigDecimal.valueOf(100));
         return carValue.multiply(percentage);
     }
-
-//    private void saveMonthlyPayment(CalculatorRequest calculatorRequest, BigDecimal monthlyPayment) {
-//        calculatorService.saveMonthlyPayment(calculatorRequest, monthlyPayment);
-//    }
 
 }

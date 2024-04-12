@@ -2,7 +2,7 @@ package com.example.sick.api.controller;
 
 import com.example.sick.api.model.request.CalculatorRequest;
 import com.example.sick.api.model.response.CalculatorResponse;
-import com.example.sick.service.CalculatorServiceImpl;
+import com.example.sick.service.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,22 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-
 @RestController
 @RequestMapping(value = "/car-leasing")
 @CrossOrigin("*")
 public class CalculatorController {
 
-    private final CalculatorServiceImpl calculatorService;
+    private final CalculatorService calculatorService;
 
     @Autowired
-    public CalculatorController(CalculatorServiceImpl calculatorService) {
+    public CalculatorController(CalculatorService calculatorService) {
         this.calculatorService = calculatorService;
     }
 
     @PostMapping("/calculator")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public CalculatorResponse calculate(@RequestBody CalculatorRequest calculatorRequest) {
         return calculatorService.calculateMonthlyPayment(calculatorRequest);
     }
