@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 @Service
@@ -28,19 +29,22 @@ public class CalculatorService {
                 calculatorDAOResponse.eco() :
                 calculatorDAOResponse.regular());
 
-  //      BigDecimal interestRate = BigDecimal.valueOf(5);
-
         BigDecimal rate = interestRate.divide(BigDecimal.valueOf(100));
 
-        BigDecimal totalPayableInterest = (calculatorRequest.carValue().subtract(calculatorRequest.downPayment())
-                .subtract(calculateResidualValue(calculatorRequest.carValue(), calculatorRequest.residualValuePercentage())))
-                .multiply(rate.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP)) // Assuming 2 decimal places for monthly rate
-                .multiply(BigDecimal.valueOf(calculatorRequest.period()).divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP));
+        BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), MathContext.DECIMAL64);
+
+        BigDecimal loanAmountMinusDownPaymentAndResidual = calculatorRequest.carValue()
+                .subtract(calculatorRequest.downPayment())
+                .subtract(calculateResidualValue(calculatorRequest.carValue(), calculatorRequest.residualValuePercentage()));
+
+        BigDecimal totalPayableInterest = loanAmountMinusDownPaymentAndResidual
+                .multiply(monthlyRate)
+                .multiply(BigDecimal.valueOf(calculatorRequest.period()))
+                .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
 
         BigDecimal monthlyInterest = totalPayableInterest.divide(BigDecimal.valueOf(calculatorRequest.period()), 2, RoundingMode.HALF_UP);
 
-        BigDecimal monthlyLoanAmount = (calculatorRequest.carValue().subtract(calculatorRequest.downPayment())
-                .subtract(calculateResidualValue(calculatorRequest.carValue(), calculatorRequest.residualValuePercentage())))
+        BigDecimal monthlyLoanAmount = loanAmountMinusDownPaymentAndResidual
                 .divide(BigDecimal.valueOf(calculatorRequest.period()), 2, RoundingMode.HALF_UP);
 
         return new CalculatorResponse(monthlyLoanAmount.add(monthlyInterest));
