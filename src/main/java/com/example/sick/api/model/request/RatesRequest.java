@@ -7,8 +7,9 @@ public record RatesRequest(
         BigDecimal carValue,
         int period,
         BigDecimal downPayment,
-        double residualValuePercentage,
-        Boolean isEcoFriendly
+        int residualValuePercentage,
+        Boolean isEcoFriendly,
+        BigDecimal monthlyPayment
 
 ) {
 }

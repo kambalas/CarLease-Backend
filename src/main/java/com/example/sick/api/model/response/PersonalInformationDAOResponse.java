@@ -3,7 +3,7 @@ package com.example.sick.api.model.response;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record PersonalInformationResponse(
+public record PersonalInformationDAOResponse(
 
         long id,
         String firstName,
@@ -17,5 +17,4 @@ public record PersonalInformationResponse(
         String citizenship,
         BigDecimal monthlyIncome
 
-) {
-}
+) {}

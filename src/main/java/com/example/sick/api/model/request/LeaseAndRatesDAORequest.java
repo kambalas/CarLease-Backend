@@ -1,6 +1,8 @@
 package com.example.sick.api.model.request;
 
-public record LeaseRequest(
+import java.math.BigDecimal;
+
+public record LeaseAndRatesDAORequest(
 
         String make,
         String model,
@@ -12,7 +14,13 @@ public record LeaseRequest(
         String url,
         String offer,
         Boolean terms,
-        Boolean confirmation
+        Boolean confirmation,
+        BigDecimal carValue,
+        int period,
+        BigDecimal downPayment,
+        int residualValuePercentage,
+        Boolean isEcoFriendly,
+        BigDecimal monthlyPayment
 
 ) {
 }

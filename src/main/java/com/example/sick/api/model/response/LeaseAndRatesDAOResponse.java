@@ -1,6 +1,8 @@
 package com.example.sick.api.model.response;
 
-public record LeaseResponse(
+import java.math.BigDecimal;
+
+public record LeaseAndRatesDAOResponse(
         long id,
         String make,
         String model,
@@ -12,6 +14,11 @@ public record LeaseResponse(
         String url,
         String offer,
         Boolean terms,
-        Boolean confirmation
-) {
-}
+        Boolean confirmation,
+        BigDecimal carValue,
+        int period,
+        BigDecimal downPayment,
+        int residualValuePercentage,
+        Boolean isEcoFriendly,
+        BigDecimal monthlyPayment
+) {}

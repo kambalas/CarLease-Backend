@@ -1,19 +1,22 @@
-CREATE TABLE lease (
-                       id BIGINT AUTO_INCREMENT,
+CREATE TABLE LEASE (
+                       id BIGINT,
                        make VARCHAR(50),
                        model VARCHAR(100),
                        modelVariant VARCHAR(20),
                        year CHAR(5),
                        fuelType VARCHAR(50),
-                       enginePower DOUBLE,
+                       enginePower FLOAT,
+                       engineSize FLOAT,
                        url VARCHAR(2048),
                        offer VARCHAR(255),
                        terms BOOLEAN,
                        confirmation BOOLEAN,
-                       carValue BIGDECIMAL,
+                       carValue NUMERIC(100, 10),
                        period INT,
-                       downPayment BIGDECIMAL,
-                       residualValuePercentage DOUBLE,
+                       downPayment NUMERIC(100, 10),
+                       residualValuePercentage INT,
                        isEcoFriendly BOOLEAN,
-                       PRIMARY KEY (id)
+                       monthlyPayment NUMERIC(100, 10),
+                       PRIMARY KEY (id),
+                       FOREIGN KEY (id) REFERENCES personal_information(id)
 );

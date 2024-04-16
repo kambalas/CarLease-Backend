@@ -1,16 +1,16 @@
 package com.example.sick.api.model.response;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public record RatesResponse(
 
-        BigInteger id,
+        long id,
         BigDecimal carValue,
         int period,
         BigDecimal downPayment,
-        double residualValuePercentage,
-        Boolean isEcoFriendly
+        long residualValuePercentage,
+        Boolean isEcoFriendly,
+        BigDecimal monthlyPayment
 
 ) {
 }

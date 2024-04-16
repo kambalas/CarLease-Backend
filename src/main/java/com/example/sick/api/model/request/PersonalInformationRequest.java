@@ -1,6 +1,7 @@
 package com.example.sick.api.model.request;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public record PersonalInformationRequest(
 
@@ -9,7 +10,7 @@ public record PersonalInformationRequest(
         String email,
         String phoneNumber,
         long pid,
-        String dateOfBirth,
+        Date dateOfBirth,
         String maritalStatus,
         int numberOfChildren,
         String citizenship,

@@ -1,5 +1,5 @@
-CREATE TABLE personalInformation (
-                                     id BIGINT AUTO_INCREMENT,
+CREATE TABLE PERSONAL_INFORMATION (
+                                     id BIGSERIAL,
                                      firstName VARCHAR(100),
                                      lastName VARCHAR(100),
                                      email VARCHAR(100),
@@ -9,6 +9,6 @@ CREATE TABLE personalInformation (
                                      maritalStatus VARCHAR(50),
                                      numberOfChildren INT,
                                      citizenship VARCHAR(100),
-                                     monthlyIncome BIGDECIMAL,
+                                     monthlyIncome NUMERIC(100, 10),
                                      PRIMARY KEY (id)
 );
