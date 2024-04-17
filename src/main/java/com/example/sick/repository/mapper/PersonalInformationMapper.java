@@ -1,6 +1,6 @@
 package com.example.sick.repository.mapper;
 
-import com.example.sick.api.model.response.PersonalInformationDAOResponse;
+import com.example.sick.domain.PersonalInformationDAOResponse;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

@@ -1,7 +1,7 @@
 package com.example.sick.repository;
 
-import com.example.sick.api.model.request.LeaseAndRatesDAORequest;
-import com.example.sick.api.model.response.LeaseAndRatesDAOResponse;
+import com.example.sick.domain.LeaseAndRatesDAORequest;
+import com.example.sick.domain.LeaseAndRatesDAOResponse;
 import com.example.sick.repository.mapper.LeaseAndRatesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

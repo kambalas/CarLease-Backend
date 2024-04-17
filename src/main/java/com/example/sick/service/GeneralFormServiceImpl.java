@@ -2,16 +2,17 @@ package com.example.sick.service;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
 import com.example.sick.api.model.request.GeneralFormsRequest;
-import com.example.sick.api.model.request.LeaseAndRatesDAORequest;
-import com.example.sick.api.model.request.PersonalInformationDAORequest;
+import com.example.sick.domain.LeaseAndRatesDAORequest;
+import com.example.sick.domain.PersonalInformationDAORequest;
 import com.example.sick.api.model.response.GeneralFormsResponse;
-import com.example.sick.api.model.response.LeaseAndRatesDAOResponse;
+import com.example.sick.domain.LeaseAndRatesDAOResponse;
 import com.example.sick.api.model.response.LeaseResponse;
-import com.example.sick.api.model.response.PersonalInformationDAOResponse;
+import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.api.model.response.PersonalInformationResponse;
 import com.example.sick.api.model.response.RatesResponse;
 import com.example.sick.repository.LeaseAndRatesRepository;
 import com.example.sick.repository.PersonalInformationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -28,14 +29,28 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
     ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 24, 36, 48, 60, 72));
     ArrayList<Integer> RESIDUAL_VALUE_PERCENTAGES = new ArrayList<>(Arrays.asList(0, 5, 10, 15, 20, 25, 30));
+    String MAIL_SUBJECT = "TLizingas Loan";
+    String MAIL_BODY = """
+            Hey there!,
+                            
+            Thank you for using the TLizingas loan calculator!
+            We've successfully received your application.
+                            
+            TLizingas staff will get in touch with you shortly!
+                            
+            Have a great day!
+            TLizingas Team
+            """;
 
 
     LeaseAndRatesRepository leaseAndRatesRepository;
     PersonalInformationRepository personalInformationRepository;
+    EmailService emailService;
 
-    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository) {
+    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService) {
         this.leaseAndRatesRepository = leaseAndRatesRepository;
         this.personalInformationRepository = personalInformationRepository;
+        this.emailService = emailService;
     }
 
 
@@ -75,13 +90,18 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         try {
             validatePersonalInformation(personalInformationDAORequest);
             validateLeaseAndRatesResponse(leaseAndRatesDAORequest);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
 
         long pid = personalInformationRepository.createPersonalInformation(personalInformationDAORequest);
         if (pid != 0) {
             leaseAndRatesRepository.createLeaseAndRate(leaseAndRatesDAORequest, pid);
+            try {
+                emailService.sendMail(personalInformationDAORequest.email(), MAIL_SUBJECT, MAIL_BODY);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Failed to send email: " + e.getMessage());
+            }
         }
     }
 
@@ -254,13 +274,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             throw new IllegalArgumentException("Engine size must be non-negative.");
         }
 
-        if (request.url() == null || request.url().isEmpty() || !request.url().matches("^(http|https)://.*")) {
+        if (!request.url().isEmpty() && !request.url().matches("^(http|https)://.*")) {
             throw new IllegalArgumentException("Invalid URL.");
-        }
-
-        // Validate offer
-        if (request.offer() == null || request.offer().isEmpty()) {
-            throw new IllegalArgumentException("Offer cannot be null or empty.");
         }
 
         if (!request.terms() || !request.confirmation()) {
@@ -271,7 +286,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             throw new IllegalArgumentException("Car value must be greater than zero.");
         }
 
-        if (PERIOD_VALUE.contains(request.period())) {
+        if (!PERIOD_VALUE.contains((request.period()))) {
             throw new IllegalArgumentException("Lease period incorrect.");
         }
 

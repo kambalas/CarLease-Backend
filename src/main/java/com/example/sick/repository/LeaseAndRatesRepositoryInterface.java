@@ -1,7 +1,7 @@
 package com.example.sick.repository;
 
-import com.example.sick.api.model.request.LeaseAndRatesDAORequest;
-import com.example.sick.api.model.response.LeaseAndRatesDAOResponse;
+import com.example.sick.domain.LeaseAndRatesDAORequest;
+import com.example.sick.domain.LeaseAndRatesDAOResponse;
 
 import java.util.List;
 import java.util.Optional;

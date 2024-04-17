@@ -1,7 +1,7 @@
 package com.example.sick.repository;
 
-import com.example.sick.api.model.request.PersonalInformationDAORequest;
-import com.example.sick.api.model.response.PersonalInformationDAOResponse;
+import com.example.sick.domain.PersonalInformationDAORequest;
+import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.repository.mapper.PersonalInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

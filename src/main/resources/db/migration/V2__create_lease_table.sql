@@ -11,12 +11,12 @@ CREATE TABLE LEASE (
                        offer VARCHAR(255),
                        terms BOOLEAN,
                        confirmation BOOLEAN,
-                       carValue NUMERIC(100, 10),
+                       carValue NUMERIC(100, 4),
                        period INT,
-                       downPayment NUMERIC(100, 10),
+                       downPayment NUMERIC(100, 4),
                        residualValuePercentage INT,
                        isEcoFriendly BOOLEAN,
-                       monthlyPayment NUMERIC(100, 10),
+                       monthlyPayment NUMERIC(100, 4),
                        PRIMARY KEY (id),
                        FOREIGN KEY (id) REFERENCES personal_information(id)
 );

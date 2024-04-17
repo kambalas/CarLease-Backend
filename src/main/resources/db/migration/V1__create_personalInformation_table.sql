@@ -9,6 +9,6 @@ CREATE TABLE PERSONAL_INFORMATION (
                                      maritalStatus VARCHAR(50),
                                      numberOfChildren INT,
                                      citizenship VARCHAR(100),
-                                     monthlyIncome NUMERIC(100, 10),
+                                     monthlyIncome NUMERIC(100, 4),
                                      PRIMARY KEY (id)
 );

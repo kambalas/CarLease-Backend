@@ -1,4 +1,4 @@
-package com.example.sick.api.model.request;
+package com.example.sick.domain;
 
 import java.math.BigDecimal;
 
