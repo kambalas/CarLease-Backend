@@ -16,7 +16,7 @@ public class PersonalInformationMapper implements RowMapper<PersonalInformationD
                 resultSet.getString("lastName"),
                 resultSet.getString("email"),
                 resultSet.getString("phoneNumber"),
-                resultSet.getLong("pid"),
+                resultSet.getString("pid"),
                 resultSet.getDate("dateOfBirth"),
                 resultSet.getString("maritalStatus"),
                 resultSet.getInt("numberOfChildren"),

@@ -10,7 +10,7 @@ public record PersonalInformationDAOResponse(
         String lastName,
         String email,
         String phoneNumber,
-        long pid,
+        String pid,
         Date dateOfBirth,
         String maritalStatus,
         int numberOfChildren,

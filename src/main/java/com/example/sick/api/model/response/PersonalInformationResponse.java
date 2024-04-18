@@ -10,7 +10,7 @@ public record PersonalInformationResponse(
         String lastName,
         String email,
         String phoneNumber,
-        long pid,
+        String pid,
         Date dateOfBirth,
         String maritalStatus,
         int numberOfChildren,

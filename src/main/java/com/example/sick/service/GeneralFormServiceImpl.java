@@ -230,8 +230,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             throw new IllegalArgumentException("Invalid phone number.");
         }
 
-        if (personalInformationDAORequest.pid() < 0) {
-            throw new IllegalArgumentException("PID must be non-negative.");
+        if (personalInformationDAORequest.pid() == null || personalInformationDAORequest.pid().isEmpty()){
+            throw new IllegalArgumentException("PID must not be empty.");
         }
 
         if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().after(new Date())) {
