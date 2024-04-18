@@ -98,11 +98,17 @@ public class EmailService implements EmailServiceInterface {
     }
 
 
-    public void saveMailHistory(MailRequest mailRequest){
+    public void saveMailHistory(MailRequest mailRequest) throws Exception{
         if (mailRequest == null || mailRequest.mailText() == null || mailRequest.mailText().isEmpty()) {
             throw new IllegalArgumentException("Mail request must not be null");
         }
+        try {
+            sendMail(mailRequest.mailRecipient(), "TLizingas Loan Application", mailRequest.mailText());
             mailRepository.createMail(convertMailRequestIntoMailDAORequest(mailRequest));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<MailResponse> getMailByApplicationId(long applicationId){
