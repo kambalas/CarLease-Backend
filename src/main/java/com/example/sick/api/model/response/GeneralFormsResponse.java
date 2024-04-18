@@ -8,9 +8,8 @@ public record GeneralFormsResponse(
 
         RatesResponse ratesResponse,
         PersonalInformationResponse personalInformationResponse,
-        LeaseResponse leaseResponse
-
-
+        LeaseResponse leaseResponse,
+        StatusResponse statusResponse
 
 ) {
 }
