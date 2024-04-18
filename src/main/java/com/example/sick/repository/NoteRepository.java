@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,20 +21,18 @@ public class NoteRepository implements NoteRepositoryInterface {
     }
 
     @Override
-    public Optional<NoteDAOResponse> selectNotesById(long applicationId) {
+    public List<NoteDAOResponse> selectNotesById(long applicationId) {
         String query = """
                     SELECT id, application_id, note_text
                     FROM notes
                     WHERE application_id = :applicationId
-                    ORDER BY created_at DESC
-                    LIMIT 1;
+                    ORDER BY created_at DESC;
                 """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("applicationId", applicationId);
 
-        return namedParameterJdbcTemplate.query(query, params, new NoteMapper())
-                .stream()
-                .findFirst();
+        return namedParameterJdbcTemplate.query(query, params, new NoteMapper());
+
     }
 
     @Override

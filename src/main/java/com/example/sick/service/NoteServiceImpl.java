@@ -8,6 +8,7 @@ import com.example.sick.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,20 +20,20 @@ public class NoteServiceImpl implements NoteServiceInterface {
     public NoteServiceImpl(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
-    @Override
-    public NoteResponse getNotesById(long id) {
 
-        Optional<NoteDAOResponse> note = noteRepository.selectNotesById(id);
-        if (note.isPresent()) {
-            return convertDaoResponseIntoNoteResponse(note.get());
-        } else {
-            return new NoteResponse("");
-        }
+    @Override
+    public List<NoteResponse> getNotesById(long id) {
+
+        return noteRepository.selectNotesById(id).stream()
+                .map(this::convertDaoResponseIntoNoteResponse)
+                .toList();
+
     }
+
     @Override
     public void createNote(NoteRequest noteRequest) {
 
-        if (noteRequest == null) {
+        if (noteRequest == null || noteRequest.noteText() == null || noteRequest.noteText().isEmpty()) {
             throw new IllegalArgumentException("Note request must not be null");
         }
         String noteText = noteRequest.noteText() == null ? "" : noteRequest.noteText();
