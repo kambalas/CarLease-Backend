@@ -117,6 +117,30 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         }
     }
 
+    public PersonalInformationResponse getPersonalInformationById(long id) throws ApplicationNotFoundException {
+        Optional<PersonalInformationDAOResponse> personalInformationDAOResponse = personalInformationRepository.getPersonalInformationById(id);
+        if (personalInformationDAOResponse.isPresent()) {
+            return convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponse.orElse(null));
+        }
+        throw new ApplicationNotFoundException(id);
+    }
+
+    public LeaseResponse getLeaseInformationById(long id) throws ApplicationNotFoundException {
+        Optional<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponse = leaseAndRatesRepository.getLeaseAndRateById(id);
+        if (leaseAndRatesDAOResponse.isPresent()) {
+            return convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse.orElse(null));
+        }
+        throw new ApplicationNotFoundException(id);
+    }
+
+    public RatesResponse getRatesInformationById(long id) throws ApplicationNotFoundException {
+        Optional<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponse = leaseAndRatesRepository.getLeaseAndRateById(id);
+        if (leaseAndRatesDAOResponse.isPresent()) {
+            return convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse.orElse(null));
+        }
+        throw new ApplicationNotFoundException(id);
+    }
+
     private PersonalInformationDAORequest convertGeneralFormsRequestIntoPersonalInformationRequest(GeneralFormsRequest generalFormsRequest) {
         return new PersonalInformationDAORequest(
                 generalFormsRequest.personalInformationRequest().firstName(),
