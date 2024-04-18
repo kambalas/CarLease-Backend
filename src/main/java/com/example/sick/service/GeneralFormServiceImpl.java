@@ -2,6 +2,7 @@ package com.example.sick.service;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
 import com.example.sick.api.model.request.GeneralFormsRequest;
+import com.example.sick.api.model.response.StatusResponse;
 import com.example.sick.domain.LeaseAndRatesDAORequest;
 import com.example.sick.domain.PersonalInformationDAORequest;
 import com.example.sick.api.model.response.GeneralFormsResponse;
@@ -10,9 +11,10 @@ import com.example.sick.api.model.response.LeaseResponse;
 import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.api.model.response.PersonalInformationResponse;
 import com.example.sick.api.model.response.RatesResponse;
+import com.example.sick.domain.StatusDAOResponse;
 import com.example.sick.repository.LeaseAndRatesRepository;
 import com.example.sick.repository.PersonalInformationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.sick.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -45,12 +47,14 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
     LeaseAndRatesRepository leaseAndRatesRepository;
     PersonalInformationRepository personalInformationRepository;
+    StatusRepository statusRepository;
     EmailService emailService;
 
-    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService) {
+    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService, StatusRepository statusRepository) {
         this.leaseAndRatesRepository = leaseAndRatesRepository;
         this.personalInformationRepository = personalInformationRepository;
         this.emailService = emailService;
+        this.statusRepository = statusRepository;
     }
 
 
@@ -58,13 +62,15 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
         List<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponses = leaseAndRatesRepository.getAllLeaseAndRates();
         List<PersonalInformationDAOResponse> personalInformationDAOResponses = personalInformationRepository.getAllPersonalInformation();
-
+        List<StatusDAOResponse> statusDaoResponses = statusRepository.getAllStatus();
         return leaseAndRatesDAOResponses.stream()
                 .map(leaseAndRatesDAOResponse -> new GeneralFormsResponse(
                         convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse),
                         convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponses
                                 .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))),
-                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse))).toList();
+                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse),
+                        convertDAOResponseIntoStatusResponse(statusDaoResponses
+                                .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))))).toList();
 
     }
 
@@ -72,11 +78,16 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
         Optional<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponse = leaseAndRatesRepository.getLeaseAndRateById(id);
         Optional<PersonalInformationDAOResponse> personalInformationDAOResponse = personalInformationRepository.getPersonalInformationById(id);
+        Optional<StatusDAOResponse> statusDAOResponse = statusRepository.getStatusById(id);
+
         if (leaseAndRatesDAOResponse.isPresent() && personalInformationDAOResponse.isPresent()) {
+
             LeaseResponse leaseResponse = convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse.orElse(null));
             RatesResponse ratesResponse = convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse.orElse(null));
             PersonalInformationResponse personalInformationResponse = convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponse.orElse(null));
-            return new GeneralFormsResponse(ratesResponse, personalInformationResponse, leaseResponse);
+            StatusResponse statusResponse = convertDAOResponseIntoStatusResponse(statusDAOResponse.orElse(null));
+
+            return new GeneralFormsResponse(ratesResponse, personalInformationResponse, leaseResponse, statusResponse);
         }
         throw new ApplicationNotFoundException(id);
 
@@ -97,6 +108,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         long pid = personalInformationRepository.createPersonalInformation(personalInformationDAORequest);
         if (pid != 0) {
             leaseAndRatesRepository.createLeaseAndRate(leaseAndRatesDAORequest, pid);
+            statusRepository.createStatus(pid);
             try {
                 emailService.sendMail(personalInformationDAORequest.email(), MAIL_SUBJECT, MAIL_BODY);
             } catch (Exception e) {
@@ -187,6 +199,16 @@ public class GeneralFormServiceImpl implements GeneralFormService {
                 leaseAndRatesDAOResponse.isEcoFriendly(),
                 leaseAndRatesDAOResponse.monthlyPayment()
 
+        );
+    }
+
+    private StatusResponse convertDAOResponseIntoStatusResponse(StatusDAOResponse statusDAOResponse) {
+        return new StatusResponse(
+                statusDAOResponse.id(),
+                statusDAOResponse.APPLICATIONSTATUS(),
+                statusDAOResponse.isOpened(),
+                statusDAOResponse.updatedAt(),
+                statusDAOResponse.createdAt()
         );
     }
 
