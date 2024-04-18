@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class NoteService {
+public class NoteServiceImpl implements NoteServiceInterface {
 
     private NoteRepository noteRepository;
 
     @Autowired
-    public NoteService(NoteRepository noteRepository) {
+    public NoteServiceImpl(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
-
+    @Override
     public NoteResponse getNotesById(long id) {
 
         Optional<NoteDAOResponse> note = noteRepository.selectNotesById(id);
@@ -29,13 +29,7 @@ public class NoteService {
             return new NoteResponse("");
         }
     }
-
-    private NoteResponse convertDaoResponseIntoNoteResponse(NoteDAOResponse note) {
-        return note == null
-                ? null
-                : new NoteResponse(note.noteText());
-    }
-
+    @Override
     public void createNote(NoteRequest noteRequest) {
 
         if (noteRequest == null) {
@@ -45,5 +39,11 @@ public class NoteService {
         NoteDAORequest daoRequest = new NoteDAORequest(noteRequest.applicationId(), noteText);
 
         noteRepository.createNote(daoRequest);
+    }
+
+    private NoteResponse convertDaoResponseIntoNoteResponse(NoteDAOResponse note) {
+        return note == null
+                ? null
+                : new NoteResponse(note.noteText());
     }
 }

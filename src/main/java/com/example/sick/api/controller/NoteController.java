@@ -2,7 +2,7 @@ package com.example.sick.api.controller;
 
 import com.example.sick.api.model.request.NoteRequest;
 import com.example.sick.api.model.response.NoteResponse;
-import com.example.sick.service.NoteService;
+import com.example.sick.service.NoteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class NoteController {
 
-    NoteService noteService;
+    NoteServiceImpl noteService;
 
     @Autowired
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteServiceImpl noteService) {
         this.noteService = noteService;
     }
 

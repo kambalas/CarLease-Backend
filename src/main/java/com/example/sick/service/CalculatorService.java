@@ -12,7 +12,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 @Service
-public class CalculatorService {
+public class CalculatorService implements CalculatorServiceInterface {
 
     private final CalculatorRepository calculatorRepository;
 
