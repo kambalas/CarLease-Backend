@@ -74,6 +74,22 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
     }
 
+    public List<GeneralFormsResponse> selectAllApplicationsByPage(long id) {
+
+        List<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponses = leaseAndRatesRepository.getAllLeaseAndRatesByPage(id);
+        List<PersonalInformationDAOResponse> personalInformationDAOResponses = personalInformationRepository.getAllPersonalInformationByPage(id);
+        List<StatusDAOResponse> statusDaoResponses = statusRepository.getAllStatusByPage(id);
+        return leaseAndRatesDAOResponses.stream()
+                .map(leaseAndRatesDAOResponse -> new GeneralFormsResponse(
+                        convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse),
+                        convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponses
+                                .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))),
+                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse),
+                        convertDAOResponseIntoStatusResponse(statusDaoResponses
+                                .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))))).toList();
+
+    }
+
     public GeneralFormsResponse getApplicationById(long id) throws ApplicationNotFoundException {
 
         Optional<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponse = leaseAndRatesRepository.getLeaseAndRateById(id);

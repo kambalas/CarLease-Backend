@@ -1,7 +1,9 @@
 package com.example.sick.repository;
 
+import com.example.sick.domain.LeaseAndRatesDAOResponse;
 import com.example.sick.domain.PersonalInformationDAORequest;
 import com.example.sick.domain.PersonalInformationDAOResponse;
+import com.example.sick.repository.mapper.LeaseAndRatesMapper;
 import com.example.sick.repository.mapper.PersonalInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -28,6 +30,20 @@ public class PersonalInformationRepository implements PersonalInformationReposit
                 FROM PERSONAL_INFORMATION
                 """;
         return namedParameterJdbcTemplate.query(query, new PersonalInformationMapper());
+    }
+
+    @Override
+    public List<PersonalInformationDAOResponse> getAllPersonalInformationByPage(long pageNumber){
+        String query = """
+            SELECT *
+            FROM PERSONAL_INFORMATION
+            LIMIT 7 OFFSET :offset
+            """;
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("offset", (pageNumber - 1) * 7);
+
+        return namedParameterJdbcTemplate.query(query, params, new PersonalInformationMapper());
+
     }
 
     public Optional<PersonalInformationDAOResponse> getPersonalInformationById(long pid) {

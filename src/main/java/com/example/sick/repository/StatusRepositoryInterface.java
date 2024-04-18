@@ -15,4 +15,6 @@ public interface StatusRepositoryInterface {
      Optional<StatusDAOResponse> getStatusById(long id);
 
      List<StatusDAOResponse> getAllStatus();
+
+    List<StatusDAOResponse> getAllStatusByPage(long pageNumber);
 }
