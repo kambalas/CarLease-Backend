@@ -10,7 +10,7 @@ import com.example.sick.utils.ApplicationStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StatusServiceImpl implements StatusService{
+public class StatusServiceImpl implements StatusService {
 
     StatusRepository statusRepository;
 
@@ -26,7 +26,6 @@ public class StatusServiceImpl implements StatusService{
     @Override
     public StatusResponse getStatusById(long id) throws StatusNotFoundException {
         StatusDAOResponse statusDAOResponse = statusRepository.getStatusById(id).orElseThrow(() -> new StatusNotFoundException(id));
-        System.out.println(statusDAOResponse);
         return convertStatusDAOResponseToStatusResponse(statusDAOResponse);
     }
 

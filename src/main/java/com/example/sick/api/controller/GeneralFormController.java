@@ -27,12 +27,6 @@ public class GeneralFormController {
         this.generalFormsService = generalFormsService;
     }
 
-    @GetMapping("/applications")
-    @ResponseStatus(HttpStatus.OK)
-    public List<GeneralFormsResponse> getAllApplications() {
-        return generalFormsService.selectAllApplications();
-    }
-
     @GetMapping("/applications/page/{pageNumber}")
     @ResponseStatus(HttpStatus.OK)
     public List<GeneralFormsResponse> getAllApplicationsByPage(@PathVariable long pageNumber) {

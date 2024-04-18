@@ -36,7 +36,7 @@ public class MailRepository implements MailRepositoryInterface {
     @Override
     public void createMail(MailDAORequest mail) {
         String query = """
-                    INSERT INTO notes (application_id, mail_text)
+                    INSERT INTO mail (application_id, mail_text)
                     VALUES(:applicationId, :mailText)
                 """;
 
@@ -44,6 +44,6 @@ public class MailRepository implements MailRepositoryInterface {
                 .addValue("applicationId", mail.applicationId())
                 .addValue("mailText", mail.mailText());
 
-        namedParameterJdbcTemplate.queryForObject(query, params, Long.class);
+        namedParameterJdbcTemplate.update(query, params);
     }
 }

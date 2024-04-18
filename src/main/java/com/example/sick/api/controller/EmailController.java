@@ -43,13 +43,13 @@ public class EmailController {
             return "Failed to send email: " + e.getMessage();
         }
     }
-    @PostMapping("/mail/save")
+    @PostMapping("/admin/mail/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveEmail(@RequestBody MailRequest email){
         mailer.saveMailHistory(email);
     }
 
-    @GetMapping("/mail/{applicationId}")
+    @GetMapping("/admin/mail/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
     public String getMailByApplicationId(@PathVariable long applicationId){
         return mailer.getMailByApplicationId(applicationId).toString();
