@@ -32,6 +32,20 @@ public class LeaseAndRatesRepository implements LeaseAndRatesRepositoryInterface
     }
 
     @Override
+    public List<LeaseAndRatesDAOResponse> getAllLeaseAndRatesByPage(long pageNumber){
+        String query = """
+            SELECT *
+            FROM LEASE
+            LIMIT 7 OFFSET :offset
+            """;
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("offset", (pageNumber - 1) * 7);
+
+        return namedParameterJdbcTemplate.query(query, params, new LeaseAndRatesMapper());
+
+    }
+
+    @Override
     public Optional<LeaseAndRatesDAOResponse> getLeaseAndRateById(long pid) {
         String query = """
                 SELECT *

@@ -33,6 +33,12 @@ public class GeneralFormController {
         return generalFormsService.selectAllApplications();
     }
 
+    @GetMapping("/applications/page/{pageNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GeneralFormsResponse> getAllApplicationsByPage(@PathVariable long pageNumber) {
+        return generalFormsService.selectAllApplicationsByPage(pageNumber);
+    }
+
 
     @GetMapping("/applications/{id}")
     @ResponseStatus(HttpStatus.OK)

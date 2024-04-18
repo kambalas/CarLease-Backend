@@ -4,7 +4,7 @@ CREATE TABLE PERSONAL_INFORMATION (
                                      lastName VARCHAR(100),
                                      email VARCHAR(100),
                                      phoneNumber VARCHAR(30),
-                                     pid BIGINT,
+                                     pid VARCHAR(100),
                                      dateOfBirth DATE,
                                      maritalStatus VARCHAR(50),
                                      numberOfChildren INT,

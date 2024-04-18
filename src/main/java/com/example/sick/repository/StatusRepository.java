@@ -1,7 +1,9 @@
 package com.example.sick.repository;
 
+import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.domain.StatusDAORequest;
 import com.example.sick.domain.StatusDAOResponse;
+import com.example.sick.repository.mapper.PersonalInformationMapper;
 import com.example.sick.repository.mapper.StatusMapper;
 import com.example.sick.utils.ApplicationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,4 +73,19 @@ public class StatusRepository implements StatusRepositoryInterface {
                 """;
         return namedParameterJdbcTemplate.query(query, new StatusMapper());
     }
+
+    @Override
+    public List<StatusDAOResponse> getAllStatusByPage(long pageNumber){
+        String query = """
+            SELECT *
+            FROM STATUS
+            LIMIT 7 OFFSET :offset
+            """;
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("offset", (pageNumber - 1) * 7);
+
+        return namedParameterJdbcTemplate.query(query, params, new StatusMapper());
+
+    }
+
 }

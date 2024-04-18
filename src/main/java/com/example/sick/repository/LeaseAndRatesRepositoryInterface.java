@@ -13,4 +13,6 @@ public interface LeaseAndRatesRepositoryInterface {
     public Optional<LeaseAndRatesDAOResponse> getLeaseAndRateById(long pid);
 
     public void createLeaseAndRate(LeaseAndRatesDAORequest leaseAndRatesDAOResponse, long pid);
+
+    List<LeaseAndRatesDAOResponse> getAllLeaseAndRatesByPage(long pageNumber);
 }
