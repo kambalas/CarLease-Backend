@@ -2,7 +2,6 @@ package com.example.sick.api.controller;
 
 
 import com.example.sick.api.model.request.MailRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,15 +42,16 @@ public class EmailController {
             return "Failed to send email: " + e.getMessage();
         }
     }
+
     @PostMapping("/admin/mail/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveEmail(@RequestBody MailRequest email){
+    public void saveEmail(@RequestBody MailRequest email) throws Exception {
         mailer.saveMailHistory(email);
     }
 
     @GetMapping("/admin/mail/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
-    public String getMailByApplicationId(@PathVariable long applicationId){
+    public String getMailByApplicationId(@PathVariable long applicationId) {
         return mailer.getMailByApplicationId(applicationId).toString();
     }
 }
