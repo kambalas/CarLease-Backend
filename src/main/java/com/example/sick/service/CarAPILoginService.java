@@ -21,6 +21,13 @@ public class CarAPILoginService {
     private final RestTemplate restTemplate;
     private final CarAPIJwtRepository jwtRepository;
 
+    @Value("${car.api.token}")
+    private String carApiToken;
+
+    @Value("${car.api.secret}")
+    private String carApiSecret;
+
+
     public CarAPILoginService(RestTemplate restTemplate, CarAPIJwtRepository jwtRepository) {
         this.restTemplate = restTemplate;
         this.jwtRepository = jwtRepository;
@@ -29,9 +36,7 @@ public class CarAPILoginService {
     public CarAPIJwt loginAndSetJwt() throws JsonProcessingException {
 
         Map<String, String> loginRequestBody = new HashMap<>();
-        String carApiToken = "29c80960b12f2e6f93c99b50ce3c3682";
         loginRequestBody.put("api_token", carApiToken);
-        String carApiSecret = "72e04517-cfa7-4dfb-acdd-e3c46470d7eb";
         loginRequestBody.put("api_secret", carApiSecret);
 
         ResponseEntity<String> loginResponse = restTemplate.postForEntity(
