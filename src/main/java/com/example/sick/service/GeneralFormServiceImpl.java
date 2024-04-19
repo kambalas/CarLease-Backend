@@ -2,6 +2,7 @@ package com.example.sick.service;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
 import com.example.sick.api.model.request.GeneralFormsRequest;
+import com.example.sick.api.model.response.GeneralAllFormsResponse;
 import com.example.sick.api.model.response.StatusResponse;
 import com.example.sick.domain.LeaseAndRatesDAORequest;
 import com.example.sick.domain.PersonalInformationDAORequest;
@@ -58,16 +59,19 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         this.statusRepository = statusRepository;
     }
     @Override
-    public List<GeneralFormsResponse> selectAllApplicationsByPage(long id) {
+    public List<GeneralAllFormsResponse> selectAllApplicationsByPage(long id) {
 
         List<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponses = leaseAndRatesRepository.getAllLeaseAndRatesByPage(id);
         List<PersonalInformationDAOResponse> personalInformationDAOResponses = personalInformationRepository.getAllPersonalInformationByPage(id);
+        List<StatusDAOResponse> statusDaoResponses = statusRepository.getAllStatusByPage(id);
         return leaseAndRatesDAOResponses.stream()
-                .map(leaseAndRatesDAOResponse -> new GeneralFormsResponse(
+                .map(leaseAndRatesDAOResponse -> new GeneralAllFormsResponse(
                         convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse),
                         convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponses
                                 .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))),
-                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse))).toList();
+                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse),
+                        convertDAOResponseIntoStatusResponse(statusDaoResponses
+                                .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))))).toList();
 
     }
     @Override
