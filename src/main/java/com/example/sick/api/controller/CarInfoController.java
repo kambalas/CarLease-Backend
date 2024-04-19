@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("/carApi")
 public class CarInfoController {
+
     private final CarInfoService carInfoService;
 
     public CarInfoController(CarInfoService carInfoService) {

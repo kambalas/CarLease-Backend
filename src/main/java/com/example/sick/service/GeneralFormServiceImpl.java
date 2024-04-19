@@ -79,7 +79,6 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
         Optional<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponse = leaseAndRatesRepository.getLeaseAndRateById(id);
         Optional<PersonalInformationDAOResponse> personalInformationDAOResponse = personalInformationRepository.getPersonalInformationById(id);
-        Optional<StatusDAOResponse> statusDAOResponse = statusRepository.getStatusById(id);
 
         if (leaseAndRatesDAOResponse.isPresent() && personalInformationDAOResponse.isPresent()) {
 
