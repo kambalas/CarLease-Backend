@@ -14,7 +14,7 @@ RUN ./gradlew --version
 COPY . /app
 
 # Build the project
-RUN ./gradlew build --scan
+RUN ./gradlew build
 
 # Set the startup command
 CMD ["java", "-jar", "build/libs/sick.jar"]
