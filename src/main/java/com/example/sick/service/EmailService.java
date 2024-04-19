@@ -84,9 +84,7 @@ public class EmailService implements EmailServiceInterface {
         msg.setRaw(encodedEmail);
 
         try {
-            msg = service.users().messages().send("me", msg).execute();
-            System.out.println("Message id: " + msg.getId());
-            System.out.println(msg.toPrettyString());
+         service.users().messages().send("me", msg).execute();
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             if (error.getCode() == 403) {
