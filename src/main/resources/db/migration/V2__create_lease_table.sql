@@ -17,6 +17,8 @@ CREATE TABLE LEASE (
                        residualValuePercentage INT,
                        isEcoFriendly BOOLEAN,
                        monthlyPayment NUMERIC(100, 4),
+                       updatedAt timestamp DEFAULT now(),
+                       createdAt timestamp DEFAULT now(),
                        PRIMARY KEY (id),
                        FOREIGN KEY (id) REFERENCES personal_information(id)
 );

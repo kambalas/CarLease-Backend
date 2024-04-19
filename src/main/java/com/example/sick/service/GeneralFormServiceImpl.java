@@ -62,15 +62,12 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
         List<LeaseAndRatesDAOResponse> leaseAndRatesDAOResponses = leaseAndRatesRepository.getAllLeaseAndRatesByPage(id);
         List<PersonalInformationDAOResponse> personalInformationDAOResponses = personalInformationRepository.getAllPersonalInformationByPage(id);
-        List<StatusDAOResponse> statusDaoResponses = statusRepository.getAllStatusByPage(id);
         return leaseAndRatesDAOResponses.stream()
                 .map(leaseAndRatesDAOResponse -> new GeneralFormsResponse(
                         convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse),
                         convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponses
                                 .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))),
-                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse),
-                        convertDAOResponseIntoStatusResponse(statusDaoResponses
-                                .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))))).toList();
+                        convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse))).toList();
 
     }
     @Override
@@ -85,9 +82,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             LeaseResponse leaseResponse = convertDAOResponseIntoLeaseResponse(leaseAndRatesDAOResponse.orElse(null));
             RatesResponse ratesResponse = convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse.orElse(null));
             PersonalInformationResponse personalInformationResponse = convertDAOResponseIntoPersonalInformationResponse(personalInformationDAOResponse.orElse(null));
-            StatusResponse statusResponse = convertDAOResponseIntoStatusResponse(statusDAOResponse.orElse(null));
 
-            return new GeneralFormsResponse(ratesResponse, personalInformationResponse, leaseResponse, statusResponse);
+            return new GeneralFormsResponse(ratesResponse, personalInformationResponse, leaseResponse);
         }
         throw new ApplicationNotFoundException(id);
 
