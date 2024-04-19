@@ -1,4 +1,6 @@
-package com.example.sick.utils.jwt;
+package com.example.sick.repository;
+
+import com.example.sick.utils.jwt.CarAPIJwt;
 
 public interface CarAPIJwtRepositoryInterface {
 

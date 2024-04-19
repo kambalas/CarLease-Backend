@@ -2,9 +2,8 @@ package com.example.sick.service;
 
 import com.example.sick.domain.CarMakeAPIResponse;
 import com.example.sick.api.model.response.CarMakeResponse;
-import com.example.sick.utils.jwt.CarAPIJwtRepository;
+import com.example.sick.repository.CarAPIJwtRepository;
 import com.example.sick.utils.jwt.CarAPIJwt;
-import com.example.sick.utils.jwt.CarAPILoginService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +35,7 @@ public class CarInfoService {
         CarAPIJwt jwtToken = getCarAPIJwt();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(jwtToken.getJwt());
+        headers.setBearerAuth(jwtToken.jwt());
 
         ResponseEntity<CarMakeAPIResponse> makesResponse = restTemplate.exchange(
                 "https://carapi.app/api/makes",
@@ -44,7 +44,7 @@ public class CarInfoService {
                 CarMakeAPIResponse.class
         );
 
-        List<String> carMakes = makesResponse.getBody().data().stream()
+        List<String> carMakes = Objects.requireNonNull(makesResponse.getBody()).data().stream()
                 .map(carMake -> (String) carMake.get("name"))
                 .collect(Collectors.toList());
 
@@ -53,8 +53,8 @@ public class CarInfoService {
 
     private CarAPIJwt getCarAPIJwt() throws JsonProcessingException {
         CarAPIJwt jwtToken = jwtTokenRepository.getJwtToken();
-        if (jwtToken == null || jwtToken.isExpired()) {
-            jwtToken = carAPILoginService.loginAndSetJwt();
+        if (jwtToken.isExpired()) {
+            return carAPILoginService.loginAndSetJwt();
         }
         return jwtToken;
     }
