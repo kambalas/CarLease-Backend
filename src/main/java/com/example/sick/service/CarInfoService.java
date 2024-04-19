@@ -25,6 +25,7 @@ public class CarInfoService {
     private CarAPILoginService carAPILoginService;
 
 
+    @Autowired
     public CarInfoService(RestTemplateBuilder restTemplateBuilder,
                           CarAPIJwtRepository jwtTokenRepository,CarAPILoginService carAPILoginService) {
         this.carAPILoginService = carAPILoginService;

@@ -18,6 +18,7 @@ public class CarInfoController {
 
     CarInfoService carInfoService;
 
+    @Autowired
     public CarInfoController(CarInfoService carInfoService) {
         this.carInfoService = carInfoService;
     }
