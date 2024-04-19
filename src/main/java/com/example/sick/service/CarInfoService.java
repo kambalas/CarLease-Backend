@@ -20,17 +20,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarInfoService {
-    private final RestTemplate restTemplate;
-    private final CarAPIJwtRepository jwtTokenRepository;
-    private final CarAPILoginService carAPILoginService;
+    private RestTemplate restTemplate;
+    private CarAPIJwtRepository jwtTokenRepository;
+    private CarAPILoginService carAPILoginService;
+
 
     @Autowired
     public CarInfoService(RestTemplateBuilder restTemplateBuilder,
-                          CarAPIJwtRepository jwtTokenRepository,
-                          CarAPILoginService carAPILoginService) {
+                          CarAPIJwtRepository jwtTokenRepository,CarAPILoginService carAPILoginService) {
+        this.carAPILoginService = carAPILoginService;
         this.restTemplate = restTemplateBuilder.build();
         this.jwtTokenRepository = jwtTokenRepository;
-        this.carAPILoginService = carAPILoginService;
     }
 
     public CarMakeResponse getCarMakes() throws JsonProcessingException {

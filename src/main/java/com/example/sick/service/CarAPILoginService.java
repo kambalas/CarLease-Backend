@@ -1,5 +1,6 @@
 package com.example.sick.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import com.example.sick.repository.CarAPIJwtRepository;
 import com.example.sick.utils.jwt.CarAPIJwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,7 +21,6 @@ public class CarAPILoginService {
     private final RestTemplate restTemplate;
     private final CarAPIJwtRepository jwtRepository;
 
-    @Autowired
     public CarAPILoginService(RestTemplate restTemplate, CarAPIJwtRepository jwtRepository) {
         this.restTemplate = restTemplate;
         this.jwtRepository = jwtRepository;
