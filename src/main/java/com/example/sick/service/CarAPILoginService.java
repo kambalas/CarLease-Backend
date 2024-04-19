@@ -1,12 +1,12 @@
 package com.example.sick.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import com.example.sick.repository.CarAPIJwtRepository;
 import com.example.sick.utils.jwt.CarAPIJwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,11 @@ public class CarAPILoginService {
     private final CarAPIJwtRepository jwtRepository;
     @Value("${car.api.token}")
     private String carApiToken;
+
     @Value("${car.api.secret}")
     private String carApiSecret;
 
-    @Autowired
+
     public CarAPILoginService(RestTemplate restTemplate, CarAPIJwtRepository jwtRepository) {
         this.restTemplate = restTemplate;
         this.jwtRepository = jwtRepository;
