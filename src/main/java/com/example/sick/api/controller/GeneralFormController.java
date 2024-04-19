@@ -2,6 +2,7 @@ package com.example.sick.api.controller;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
 import com.example.sick.api.model.request.GeneralFormsRequest;
+import com.example.sick.api.model.response.GeneralAllFormsResponse;
 import com.example.sick.api.model.response.GeneralFormsResponse;
 import com.example.sick.service.GeneralFormServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class GeneralFormController {
 
     @GetMapping("/applications/page/{pageNumber}")
     @ResponseStatus(HttpStatus.OK)
-    public List<GeneralFormsResponse> getAllApplicationsByPage(@PathVariable long pageNumber) {
+    public List<GeneralAllFormsResponse> getAllApplicationsByPage(@PathVariable long pageNumber) {
         return generalFormsService.selectAllApplicationsByPage(pageNumber);
     }
 
