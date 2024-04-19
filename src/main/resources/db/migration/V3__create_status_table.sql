@@ -3,7 +3,7 @@ CREATE TABLE STATUS
     id      BIGINT,
     status  VARCHAR(30),
     isOpened    BOOLEAN DEFAULT false,
-    updatedAt timestamp,
+    updatedAt timestamp DEFAULT now(),
     createdAt timestamp DEFAULT now(),
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES personal_information(id)
