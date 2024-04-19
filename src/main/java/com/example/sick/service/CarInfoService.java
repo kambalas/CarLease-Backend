@@ -5,6 +5,7 @@ import com.example.sick.api.model.response.CarMakeResponse;
 import com.example.sick.repository.CarAPIJwtRepository;
 import com.example.sick.utils.jwt.CarAPIJwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,7 @@ public class CarInfoService {
     private final CarAPIJwtRepository jwtTokenRepository;
     private final CarAPILoginService carAPILoginService;
 
+    @Autowired
     public CarInfoService(RestTemplateBuilder restTemplateBuilder,
                           CarAPIJwtRepository jwtTokenRepository,
                           CarAPILoginService carAPILoginService) {
