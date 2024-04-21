@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("/carApi")
+@RequestMapping("/user")
 public class CarInfoController {
 
     CarInfoService carInfoService;

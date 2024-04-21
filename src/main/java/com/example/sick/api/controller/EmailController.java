@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.sick.service.EmailService;
 
 @RestController
+@RequestMapping("/admin")
 public class EmailController {
 
     private final EmailService mailer;
@@ -43,13 +45,13 @@ public class EmailController {
         }
     }
 
-    @PostMapping("/admin/mail/create")
+    @PostMapping("/mail/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveEmail(@RequestBody MailRequest email) throws Exception {
         mailer.saveMailHistory(email);
     }
 
-    @GetMapping("/admin/mail/{applicationId}")
+    @GetMapping("/mail/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
     public String getMailByApplicationId(@PathVariable long applicationId) {
         return mailer.getMailByApplicationId(applicationId).toString();

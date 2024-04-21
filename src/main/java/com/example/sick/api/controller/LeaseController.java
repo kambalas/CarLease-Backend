@@ -6,10 +6,11 @@ import com.example.sick.service.GeneralFormService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
+@RequestMapping("/admin")
 public class LeaseController {
 
     GeneralFormService generalFormsService;
@@ -18,7 +19,7 @@ public class LeaseController {
         this.generalFormsService = generalFormsService;
     }
 
-    @GetMapping("/admin/lease/{id}")
+    @GetMapping("/lease/{id}")
     public LeaseResponse getLeaseById(@PathVariable long id) throws ApplicationNotFoundException {
         return generalFormsService.getLeaseInformationById(id);
     }
