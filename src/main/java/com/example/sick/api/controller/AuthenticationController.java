@@ -25,7 +25,7 @@ public class AuthenticationController {
   ) {
     return new ResponseEntity<>(service.register(request), HttpStatus.OK);
   }
-  @CrossOrigin(origins = "https://ci-cd-angular.onrender.com")
+  @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com"})
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationDAOResponse> authenticate(
           @RequestBody AuthenticationDAORequest request
