@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 public class RatesController {
-    GeneralFormServiceImpl generalFormsService;
+
+    private final GeneralFormServiceImpl generalFormsService;
 
     public RatesController(GeneralFormServiceImpl generalFormsService) {
         this.generalFormsService = generalFormsService;
     }
 
-    @GetMapping("/admin/rates/{id}")
+    @GetMapping("/rates/{id}")
     public RatesResponse getRatesById(@PathVariable long id) throws ApplicationNotFoundException {
         return generalFormsService.getRatesInformationById(id);
     }

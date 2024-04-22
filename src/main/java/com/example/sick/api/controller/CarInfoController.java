@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class CarInfoController {
 
-    CarInfoService carInfoService;
+    private final CarInfoService carInfoService;
 
     @Autowired
     public CarInfoController(CarInfoService carInfoService) {
