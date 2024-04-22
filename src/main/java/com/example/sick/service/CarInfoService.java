@@ -3,12 +3,14 @@ package com.example.sick.service;
 import com.example.sick.api.model.response.CarMakeResponse;
 import com.example.sick.api.model.response.CarModelInfoResponse;
 import com.example.sick.api.model.response.CarModelResponse;
-import com.example.sick.domain.CarEngineDataAPIResponse;
+import com.example.sick.api.model.response.CarVariantInfoResponse;
+import com.example.sick.domain.EngineDataAPIResponse;
 import com.example.sick.domain.CarMakeAPIResponse;
 import com.example.sick.domain.CarModelAPIResponse;
 import com.example.sick.repository.CarAPIJwtRepository;
 import com.example.sick.repository.CarInfoRepository;
 import com.example.sick.repository.mapper.CarModelInfoMapper;
+import com.example.sick.repository.mapper.CarVariantInfoMapper;
 import com.example.sick.utils.jwt.CarAPIJwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,8 @@ public class CarInfoService {
         HttpHeaders headers = getHttpHeaders();
         CarModelAPIResponse modelResponse = carInfoRepository.getCarModels(headers, make);
 
-        List<String> carModels = Objects.requireNonNull(modelResponse).data().stream()
-                .map(CarModelAPIResponse.APIResponseModelData::name)
+        List<CarModelResponse.CarModel> carModels = Objects.requireNonNull(modelResponse).data().stream()
+                .map(modelData -> new CarModelResponse.CarModel(modelData.id(), modelData.name()))
                 .collect(Collectors.toList());
 
         return new CarModelResponse(carModels);
@@ -59,10 +61,18 @@ public class CarInfoService {
 
     public CarModelInfoResponse getModelInfo(int modelID) throws JsonProcessingException {
         HttpHeaders headers = getHttpHeaders();
-        CarEngineDataAPIResponse engineDataResponse = carInfoRepository.getEngineData(headers, modelID);
+        EngineDataAPIResponse modelEngineResponse = carInfoRepository.getModelEngineData(headers, modelID);
         CarModelInfoMapper mapper = new CarModelInfoMapper();
 
-        return mapper.mapFrom(engineDataResponse);
+        return mapper.mapFrom(modelEngineResponse);
+    }
+
+    public CarVariantInfoResponse getVariantInfo(int variantID) throws JsonProcessingException {
+        HttpHeaders headers = getHttpHeaders();
+        EngineDataAPIResponse variantEngineResponse = carInfoRepository.getVariantEngineData(headers, variantID);
+        CarVariantInfoMapper mapper = new CarVariantInfoMapper();
+
+        return mapper.mapFrom(variantEngineResponse);
     }
 
     private HttpHeaders getHttpHeaders() throws JsonProcessingException {
@@ -80,6 +90,4 @@ public class CarInfoService {
         }
         return jwtToken;
     }
-
-
 }

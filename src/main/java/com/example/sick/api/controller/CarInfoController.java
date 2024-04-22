@@ -3,6 +3,7 @@ package com.example.sick.api.controller;
 import com.example.sick.api.model.response.CarMakeResponse;
 import com.example.sick.api.model.response.CarModelInfoResponse;
 import com.example.sick.api.model.response.CarModelResponse;
+import com.example.sick.api.model.response.CarVariantInfoResponse;
 import com.example.sick.service.CarInfoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.TypeMismatchException;
@@ -44,6 +45,13 @@ public class CarInfoController {
     public CarModelInfoResponse getModelInfo(@RequestParam int model_id)
             throws TypeMismatchException, JsonProcessingException {
         return carInfoService.getModelInfo(model_id);
+    }
+
+    @GetMapping("/variant_info")
+    @ResponseStatus(HttpStatus.OK)
+    public CarVariantInfoResponse getVariantInfo(@RequestParam int variant_id)
+            throws TypeMismatchException, JsonProcessingException {
+        return carInfoService.getVariantInfo(variant_id);
     }
 
 }

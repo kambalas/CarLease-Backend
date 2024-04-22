@@ -1,23 +1,13 @@
 package com.example.sick.repository.mapper;
 
-import com.example.sick.api.model.response.CarModelInfoResponse;
+import com.example.sick.api.model.response.CarVariantInfoResponse;
 import com.example.sick.domain.EngineDataAPIResponse;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CarModelInfoMapper {
-    public CarModelInfoResponse mapFrom(EngineDataAPIResponse engineDataResponse) {
-
-        Set<String> names = new HashSet<>();
-        List<CarModelInfoResponse.Variant> variants = engineDataResponse.data().stream()
-                .map(engineData -> new CarModelInfoResponse.Variant(
-                        engineData.make_model_trim().id(),
-                        engineData.make_model_trim().name()))
-                .filter(variant -> names.add(variant.name()))
-                .collect(Collectors.toList());
+public class CarVariantInfoMapper {
+    public CarVariantInfoResponse mapFrom(EngineDataAPIResponse engineDataResponse) {
 
         List<Integer> years = engineDataResponse.data().stream()
                 .map(engineData -> engineData.make_model_trim().year())
@@ -39,8 +29,7 @@ public class CarModelInfoMapper {
                 .distinct()
                 .collect(Collectors.toList());
 
-        return new CarModelInfoResponse(
-                variants,
+        return new CarVariantInfoResponse(
                 years,
                 fuelTypes,
                 enginePowers,

@@ -3,7 +3,7 @@ package com.example.sick.domain;
 import java.util.List;
 import java.util.Map;
 
-public record CarEngineDataAPIResponse(
+public record EngineDataAPIResponse(
         Map<String, Object> collection,
         List<EngineData> data
 ) {

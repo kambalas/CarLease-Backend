@@ -1,6 +1,6 @@
 package com.example.sick.repository;
 
-import com.example.sick.domain.CarEngineDataAPIResponse;
+import com.example.sick.domain.EngineDataAPIResponse;
 import com.example.sick.domain.CarMakeAPIResponse;
 import com.example.sick.domain.CarModelAPIResponse;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +11,7 @@ public interface CarInfoRepositoryInterface {
 
     CarModelAPIResponse getCarModels(HttpHeaders headers, String make);
 
-    CarEngineDataAPIResponse getEngineData (HttpHeaders headers, int modelID);
+    EngineDataAPIResponse getModelEngineData(HttpHeaders headers, int modelID);
 
-
+    EngineDataAPIResponse getVariantEngineData(HttpHeaders headers, int variantID);
 }
