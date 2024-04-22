@@ -88,4 +88,16 @@ public class StatusRepository implements StatusRepositoryInterface {
 
     }
 
+    @Override
+    public void updateStatusRead(long id) {
+        String query = """
+                UPDATE STATUS
+                SET isOpened = true
+                WHERE id = :id;
+                """;
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id);
+        namedParameterJdbcTemplate.update(query, params);
+    }
+
 }

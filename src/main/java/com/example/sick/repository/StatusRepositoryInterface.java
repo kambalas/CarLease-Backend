@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StatusRepositoryInterface {
+    void updateStatusRead(long id);
+
     void createStatus(long id);
 
     void updateStatusById(StatusDAORequest status);
