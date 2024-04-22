@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
   private final AuthenticationService service;
 
+
+  @PreAuthorize("hasRole('ROLE_Admin')")
   @PostMapping("/register")
   public ResponseEntity<AuthenticationDAOResponse> register(
           @RequestBody RegisterDAORequest request
