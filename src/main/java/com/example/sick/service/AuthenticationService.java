@@ -38,9 +38,7 @@ public class AuthenticationService {
 
   public AuthenticationDAOResponse authenticate(AuthenticationDAORequest request) {
     try {
-      if(check(request.getUsername(), request.getPassword())){
 
-      };
       Authentication auth = authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(
                       request.getUsername(),
@@ -56,16 +54,4 @@ public class AuthenticationService {
     }
   }
 
-  private boolean check(String username, String password) {
-    if (username == null || password == null) {
-      return false;
-    }
-    if (username == "" || password == "") {
-      return false;
-    }
-    else {
-      return true;
-    }
-
-  }
 }
