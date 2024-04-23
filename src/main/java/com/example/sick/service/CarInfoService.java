@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarInfoService {
-    private RestTemplate restTemplate;
-    private CarAPIJwtRepository jwtTokenRepository;
-    private CarAPILoginService carAPILoginService;
+    private final RestTemplate restTemplate;
+    private final CarAPIJwtRepository jwtTokenRepository;
+    private final CarAPILoginService carAPILoginService;
 
 
     @Autowired

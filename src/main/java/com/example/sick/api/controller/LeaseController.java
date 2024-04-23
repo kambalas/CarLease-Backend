@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class LeaseController {
 
-    GeneralFormService generalFormsService;
+    private final GeneralFormService generalFormsService;
 
     public LeaseController(GeneralFormService generalFormsService) {
         this.generalFormsService = generalFormsService;

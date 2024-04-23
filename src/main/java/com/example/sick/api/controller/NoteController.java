@@ -22,7 +22,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class NoteController {
 
-    NoteServiceImpl noteService;
+    private final NoteServiceImpl noteService;
 
     @Autowired
     public NoteController(NoteServiceImpl noteService) {

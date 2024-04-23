@@ -18,7 +18,6 @@ public class EmailController {
 
     private final EmailService mailer;
 
-
     public EmailController(EmailService emailService) throws Exception {
         this.mailer = emailService;
     }

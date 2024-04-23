@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class NoteServiceImpl implements NoteServiceInterface {
 
-    private NoteRepository noteRepository;
+    private final NoteRepository noteRepository;
 
     @Autowired
     public NoteServiceImpl(NoteRepository noteRepository) {

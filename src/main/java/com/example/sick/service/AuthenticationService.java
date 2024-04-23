@@ -38,6 +38,7 @@ public class AuthenticationService {
 
   public AuthenticationDAOResponse authenticate(AuthenticationDAORequest request) {
     try {
+
       Authentication auth = authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(
                       request.getUsername(),
@@ -52,5 +53,5 @@ public class AuthenticationService {
       throw new RuntimeException("Authentication failed: " + e.getMessage(), e);
     }
   }
-}
 
+}

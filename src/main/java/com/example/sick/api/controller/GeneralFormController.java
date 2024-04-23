@@ -21,9 +21,8 @@ import java.util.List;
 @RestController
 public class GeneralFormController {
 
-    GeneralFormServiceImpl generalFormsService;
+    private final GeneralFormServiceImpl generalFormsService;
 
-    @Autowired
     public GeneralFormController(GeneralFormServiceImpl generalFormsService) {
         this.generalFormsService = generalFormsService;
     }
