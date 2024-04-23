@@ -8,7 +8,7 @@ CREATE TABLE LEASE (
                        enginePower FLOAT,
                        engineSize FLOAT,
                        url VARCHAR(2048),
-                       offer VARCHAR(255),
+                       offer BYTEA,
                        terms BOOLEAN,
                        confirmation BOOLEAN,
                        carValue NUMERIC(100, 4),

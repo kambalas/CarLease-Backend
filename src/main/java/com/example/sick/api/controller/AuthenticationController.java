@@ -25,14 +25,17 @@ public class AuthenticationController {
   @PreAuthorize("hasRole('ROLE_Admin')")
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.OK)
-  public AuthenticationDAOResponse register(@RequestBody RegisterDAORequest request) {
+  public AuthenticationDAOResponse register(
+          @RequestBody RegisterDAORequest request
+  ) {
     return authenticationService.register(request);
   }
-
   @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com"})
   @PostMapping("/authenticate")
-  @ResponseStatus(HttpStatus.OK)
-  public AuthenticationDAOResponse authenticate(@RequestBody AuthenticationDAORequest request) {
-    return authenticationService.authenticate(request);
+
+  public ResponseEntity<AuthenticationDAOResponse> authenticate(
+          @RequestBody AuthenticationDAORequest request
+  ) {
+    return new ResponseEntity<>(authenticationService.authenticate(request), HttpStatus.OK);
   }
 }

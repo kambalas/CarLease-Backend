@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/carApi")
 public class CarInfoController {
 
     CarInfoService carInfoService;
@@ -27,4 +27,5 @@ public class CarInfoController {
     public CarMakeResponse getCarMakes() throws JsonProcessingException {
         return carInfoService.getCarMakes();
     }
+
 }

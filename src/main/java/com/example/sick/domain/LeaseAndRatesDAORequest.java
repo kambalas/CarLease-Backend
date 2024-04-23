@@ -12,7 +12,7 @@ public record LeaseAndRatesDAORequest(
         Double enginePower,
         Double engineSize,
         String url,
-        String offer,
+        byte[] offer,
         Boolean terms,
         Boolean confirmation,
         BigDecimal carValue,
