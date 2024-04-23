@@ -19,6 +19,11 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    public void updateStatusRead(long id) {
+        statusRepository.updateStatusRead(id);
+    }
+
+    @Override
     public void updateStatusById(StatusRequest statusRequest) {
         statusRepository.updateStatusById(convertToStatusDAORequest(statusRequest));
     }
