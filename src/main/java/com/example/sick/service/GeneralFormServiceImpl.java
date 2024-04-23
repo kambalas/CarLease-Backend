@@ -1,9 +1,13 @@
 package com.example.sick.service;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
+import com.example.sick.api.model.request.ApplicationListRequest;
 import com.example.sick.api.model.request.GeneralFormsRequest;
+import com.example.sick.api.model.response.ApplicationListResponse;
 import com.example.sick.api.model.response.GeneralAllFormsResponse;
 import com.example.sick.api.model.response.StatusResponse;
+import com.example.sick.domain.ApplicationListDAORequest;
+import com.example.sick.domain.ApplicationListDAOResponse;
 import com.example.sick.domain.LeaseAndRatesDAORequest;
 import com.example.sick.domain.PersonalInformationDAORequest;
 import com.example.sick.api.model.response.GeneralFormsResponse;
@@ -13,18 +17,23 @@ import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.api.model.response.PersonalInformationResponse;
 import com.example.sick.api.model.response.RatesResponse;
 import com.example.sick.domain.StatusDAOResponse;
+import com.example.sick.repository.ApplicationListRepository;
 import com.example.sick.repository.LeaseAndRatesRepository;
 import com.example.sick.repository.PersonalInformationRepository;
 import com.example.sick.repository.StatusRepository;
+import com.example.sick.utils.ApplicationStatus;
 import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -46,18 +55,21 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             """;
 
 
-    LeaseAndRatesRepository leaseAndRatesRepository;
-    PersonalInformationRepository personalInformationRepository;
-    StatusRepository statusRepository;
-    EmailService emailService;
+    private final LeaseAndRatesRepository leaseAndRatesRepository;
+    private final PersonalInformationRepository personalInformationRepository;
+    private final StatusRepository statusRepository;
+    private final ApplicationListRepository applicationListRepository;
+    private final EmailService emailService;
 
 
-    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService, StatusRepository statusRepository) {
+    public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService, StatusRepository statusRepository, ApplicationListRepository applicationListRepository) {
         this.leaseAndRatesRepository = leaseAndRatesRepository;
         this.personalInformationRepository = personalInformationRepository;
         this.emailService = emailService;
         this.statusRepository = statusRepository;
+        this.applicationListRepository = applicationListRepository;
     }
+
     @Override
     public List<GeneralAllFormsResponse> selectAllApplicationsByPage(long id) {
 
@@ -74,6 +86,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
                                 .get(leaseAndRatesDAOResponses.indexOf(leaseAndRatesDAOResponse))))).toList();
 
     }
+
+
     @Override
     public GeneralFormsResponse getApplicationById(long id) throws ApplicationNotFoundException {
 
@@ -91,6 +105,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         throw new ApplicationNotFoundException(id);
 
     }
+
     @Override
     public void createApplication(GeneralFormsRequest generalFormsRequest) {
 
@@ -116,6 +131,27 @@ public class GeneralFormServiceImpl implements GeneralFormService {
         }
     }
 
+    @Override
+    public List<ApplicationListResponse> sortApplications(ApplicationListRequest applicationListRequest) {
+        ApplicationListDAORequest applicationListDAORequest = convertRequestIntoDAORequest(applicationListRequest);
+        if (applicationListRequest.STATUS() == null && applicationListRequest.searchQuery() == null) {
+            return applicationListRepository.sortApplicationsByTimestamp(applicationListDAORequest).stream()
+                    .map(this::convertApplicationListDAOResponseIntoResponse).toList();
+        }
+        if (applicationListRequest.STATUS() != null && applicationListRequest.searchQuery() != null) {
+            return applicationListRepository.sortAndFilterByStatusAndSearchQuery(applicationListDAORequest).stream()
+                    .map(this::convertApplicationListDAOResponseIntoResponse).toList();
+        }
+        if (applicationListRequest.STATUS() != null && applicationListRequest.searchQuery() == null) {
+            return applicationListRepository.sortAndFilterByStatus(applicationListDAORequest).stream()
+                    .map(this::convertApplicationListDAOResponseIntoResponse).toList();
+        } else {
+            return applicationListRepository.sortAndFilterBySearchQuery(applicationListDAORequest).stream()
+                    .map(this::convertApplicationListDAOResponseIntoResponse).toList();
+        }
+    }
+
+
     public PersonalInformationResponse getPersonalInformationById(long id) throws ApplicationNotFoundException {
         Optional<PersonalInformationDAOResponse> personalInformationDAOResponse = personalInformationRepository.getPersonalInformationById(id);
         if (personalInformationDAOResponse.isPresent()) {
@@ -138,6 +174,36 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             return convertDAOResponseIntoRatesResponse(leaseAndRatesDAOResponse.orElse(null));
         }
         throw new ApplicationNotFoundException(id);
+    }
+
+    public ApplicationListResponse convertApplicationListDAOResponseIntoResponse(ApplicationListDAOResponse applicationListDAOResponse) {
+        return new ApplicationListResponse(
+                applicationListDAOResponse.id(),
+                applicationListDAOResponse.firstName(),
+                applicationListDAOResponse.lastName(),
+                applicationListDAOResponse.isOpened(),
+                applicationListDAOResponse.status(),
+                applicationListDAOResponse.updatedAt()
+        );
+    }
+
+    private ApplicationListDAORequest convertRequestIntoDAORequest(ApplicationListRequest applicationListRequest) {
+        if (applicationListRequest.searchQuery() != null && applicationListRequest.STATUS() != null) {
+            return new ApplicationListDAORequest(
+                    applicationListRequest.page(),
+                    applicationListRequest.STATUS().stream().map(ApplicationStatus::toString).toList(),
+                    applicationListRequest.searchQuery());
+        } else if (applicationListRequest.STATUS() != null) {
+            return new ApplicationListDAORequest(
+                    applicationListRequest.page(),
+                    applicationListRequest.STATUS().stream().map(ApplicationStatus::toString).toList(),
+                    null);
+        } else {
+            return new ApplicationListDAORequest(
+                    applicationListRequest.page(),
+                    null,
+                    applicationListRequest.searchQuery());
+        }
     }
 
     private PersonalInformationDAORequest convertGeneralFormsRequestIntoPersonalInformationRequest(GeneralFormsRequest generalFormsRequest) {
@@ -253,7 +319,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             throw new IllegalArgumentException("Invalid phone number.");
         }
 
-        if (personalInformationDAORequest.pid() == null || personalInformationDAORequest.pid().isEmpty()){
+        if (personalInformationDAORequest.pid() == null || personalInformationDAORequest.pid().isEmpty()) {
             throw new IllegalArgumentException("PID must not be empty.");
         }
 
