@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarInfoService {
+
     private final CarAPIJwtRepository jwtTokenRepository;
     private final CarInfoRepository carInfoRepository;
     private final CarAPILoginService carAPILoginService;

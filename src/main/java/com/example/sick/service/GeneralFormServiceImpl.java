@@ -46,10 +46,10 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             """;
 
 
-    LeaseAndRatesRepository leaseAndRatesRepository;
-    PersonalInformationRepository personalInformationRepository;
-    StatusRepository statusRepository;
-    EmailService emailService;
+    private final LeaseAndRatesRepository leaseAndRatesRepository;
+    private final PersonalInformationRepository personalInformationRepository;
+    private final StatusRepository statusRepository;
+    private final EmailService emailService;
 
 
     public GeneralFormServiceImpl(LeaseAndRatesRepository leaseAndRatesRepository, PersonalInformationRepository personalInformationRepository, EmailService emailService, StatusRepository statusRepository) {
