@@ -35,7 +35,7 @@ public class ApplicationListRepository {
         """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("statuses", applicationListRequest.statuses())
-                .addValue("offset", (applicationListRequest.page() - 1) * 7);
+                .addValue("offset", (applicationListRequest.page() - 1) * 8);
 
           return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -50,7 +50,7 @@ public class ApplicationListRepository {
         LIMIT 7 OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("offset", (applicationListRequest.page() - 1) * 7);
+                .addValue("offset", (applicationListRequest.page() - 1) * 8);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -70,7 +70,7 @@ public class ApplicationListRepository {
         """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("searchQuery", finalName)
-                .addValue("offset", (applicationListRequest.page() - 1) * 7);
+                .addValue("offset", (applicationListRequest.page() - 1) * 8);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -96,7 +96,7 @@ public class ApplicationListRepository {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("statuses",applicationListRequest.statuses())
                 .addValue("searchQuery", finalName)
-                .addValue("offset", (applicationListRequest.page() - 1) * 7);
+                .addValue("offset", (applicationListRequest.page() - 1) * 8);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
