@@ -390,7 +390,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     if (!request.url().isEmpty() && !request.url().matches("^(http|https)://.*")) {
       throw new IllegalArgumentException("Invalid URL.");
     }
-    int MAX_FILE_SIZE = 2*1024*1024;
+    int MAX_FILE_SIZE = 3*1024*1024;
     if (request.offer() != null && request.offer().length > MAX_FILE_SIZE) {
       throw new IllegalArgumentException("File too large. Maximum size allowed is 1MB.");
     }
