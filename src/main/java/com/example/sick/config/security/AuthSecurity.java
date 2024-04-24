@@ -26,7 +26,7 @@ public class AuthSecurity {
     HttpSecurity disable = http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/user/**","/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Update this to specify the actual request matcher
+                    .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Update this to specify the actual request matcher
                     .anyRequest().authenticated())
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
