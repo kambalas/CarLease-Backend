@@ -7,13 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.support.SqlLobValue;
-import org.springframework.jdbc.support.lob.DefaultLobHandler;
-import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Repository;
 
-import java.io.ByteArrayInputStream;
-import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +66,6 @@ public class LeaseAndRatesRepository implements LeaseAndRatesRepositoryInterface
                 INSERT INTO lease (id, make, model, modelVariant, year, fuelType, enginePower, engineSize, url, offer, terms, confirmation, carValue, period, downPayment, residualValuePercentage, isEcoFriendly, monthlyPayment)
                 VALUES (:id, :make, :model, :modelVariant, :year, :fuelType, :enginePower, :engineSize, :url, :offer, :terms, :confirmation, :carValue, :period, :downPayment, :residualValuePercentage, :isEcoFriendly, :monthlyPayment)
                 """;
-        LobHandler lobHandler = new DefaultLobHandler();
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", pid)
                 .addValue("make", leaseAndRatesDAOResponse.make())

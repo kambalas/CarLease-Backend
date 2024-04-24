@@ -33,7 +33,6 @@ public class CarInfoController {
         return carInfoService.getCarMakes();
     }
 
-
     @GetMapping("/models")
     @ResponseStatus(HttpStatus.OK)
     public CarModelResponse getMakeModels (@RequestParam String make) throws JsonProcessingException {
