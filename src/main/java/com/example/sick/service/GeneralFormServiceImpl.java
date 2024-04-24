@@ -391,7 +391,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     }
     int MAX_BASE64_SIZE = 3*1024*1024*4/3;
     if (request.offer() != null && request.offer().length() > MAX_BASE64_SIZE) {
-      throw new IllegalArgumentException("File too large. Maximum size allowed is 1MB.");
+      throw new IllegalArgumentException("File too large. Maximum size allowed is 3MB.");
     }
 
     if (!request.terms() || !request.confirmation()) {
