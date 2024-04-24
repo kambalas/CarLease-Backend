@@ -10,7 +10,7 @@ public record LeaseRequest(
         Double enginePower,
         Double engineSize,
         String url,
-        byte[] offer,
+        String offer,
         Boolean terms,
         Boolean confirmation
 

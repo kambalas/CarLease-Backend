@@ -51,7 +51,6 @@ public class GeneralFormController {
         generalFormsService.createApplication(generalFormsRequest);
     }
 
-
     @PostMapping("/admin/applications")
     @ResponseStatus(HttpStatus.OK)
     public List<ApplicationListResponse> sortApplications(@RequestBody ApplicationListRequest applicationListRequest) {

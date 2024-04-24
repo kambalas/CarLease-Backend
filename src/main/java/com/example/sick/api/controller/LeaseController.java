@@ -20,34 +20,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/admin")
 public class LeaseController {
-    private final LeaseAndRatesRepository leaseAndRatesRepository;
 
     private final GeneralFormService generalFormsService;
 
-    public LeaseController(LeaseAndRatesRepository leaseAndRatesRepository, GeneralFormService generalFormsService) {
-      this.leaseAndRatesRepository = leaseAndRatesRepository;
+    public LeaseController( GeneralFormService generalFormsService) {
       this.generalFormsService = generalFormsService;
     }
 
     @GetMapping("/lease/{id}")
     public LeaseResponse getLeaseById(@PathVariable long id) throws ApplicationNotFoundException {
         return generalFormsService.getLeaseInformationById(id);
-    }
-    @GetMapping("/get-pdf/{id}")
-    public ResponseEntity<byte[]> getPdf(@PathVariable Long id) {
-        Optional<LeaseAndRatesDAOResponse> leaseOptional = leaseAndRatesRepository.getLeaseAndRateById(id);
-            LeaseAndRatesDAOResponse lease = leaseOptional.get();
-
-        byte[] decodedBytes;
-        if (lease.offer() != null && !lease.offer().isEmpty()) {
-            decodedBytes = Base64.getDecoder().decode(lease.offer());
-        } else {
-            throw new IllegalStateException("No PDF data available for lease ID: " + id);
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + lease.offer() + ".pdf\"")
-                .body(decodedBytes);
     }
 }

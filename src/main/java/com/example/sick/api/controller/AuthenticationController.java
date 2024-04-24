@@ -6,7 +6,6 @@ import com.example.sick.domain.AuthenticationDAOResponse;
 import com.example.sick.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,10 +31,10 @@ public class AuthenticationController {
   }
   @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com","http://localhost"})
   @PostMapping("/authenticate")
-
-  public ResponseEntity<AuthenticationDAOResponse> authenticate(
+  @ResponseStatus(HttpStatus.OK)
+  public AuthenticationDAOResponse authenticate(
           @RequestBody AuthenticationDAORequest request
   ) {
-    return new ResponseEntity<>(authenticationService.authenticate(request), HttpStatus.OK);
+    return authenticationService.authenticate(request);
   }
 }
