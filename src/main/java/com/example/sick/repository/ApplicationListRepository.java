@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public class ApplicationListRepository {
 
+    final int PAGE_SIZE = 15;
+    
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
@@ -31,11 +33,12 @@ public class ApplicationListRepository {
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         WHERE STATUS.status IN (:statuses)
         ORDER BY STATUS.updatedAt DESC
-        LIMIT 7 OFFSET :offset
+        LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("statuses", applicationListRequest.statuses())
-                .addValue("offset", (applicationListRequest.page() - 1) * 8);
+                .addValue("limit", PAGE_SIZE)
+                .addValue("offset", (applicationListRequest.page() - 1) * PAGE_SIZE);
 
           return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -47,10 +50,11 @@ public class ApplicationListRepository {
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         ORDER BY STATUS.updatedAt DESC
-        LIMIT 7 OFFSET :offset
+        LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("offset", (applicationListRequest.page() - 1) * 8);
+                .addValue("limit", PAGE_SIZE)
+                .addValue("offset", (applicationListRequest.page() - 1) * PAGE_SIZE);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -66,11 +70,12 @@ public class ApplicationListRepository {
         WHERE (CONCAT(LOWER(PERSONAL_INFORMATION.firstName), ' ', LOWER(PERSONAL_INFORMATION.lastName)) LIKE :searchQuery
                     OR CAST(PERSONAL_INFORMATION.id AS TEXT) LIKE :searchQuery)
         ORDER BY STATUS.updatedAt DESC
-        LIMIT 7 OFFSET :offset
+        LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("searchQuery", finalName)
-                .addValue("offset", (applicationListRequest.page() - 1) * 8);
+                .addValue("limit", PAGE_SIZE)
+                .addValue("offset", (applicationListRequest.page() - 1) * PAGE_SIZE);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
@@ -87,7 +92,7 @@ public class ApplicationListRepository {
                 AND (CONCAT(LOWER(PERSONAL_INFORMATION.firstName), ' ', LOWER(PERSONAL_INFORMATION.lastName)) LIKE :searchQuery
                     OR CAST(PERSONAL_INFORMATION.id AS TEXT) LIKE :searchQuery)
                 ORDER BY STATUS.updatedAt DESC
-                LIMIT 7 OFFSET :offset
+                LIMIT :limit OFFSET :offset
                   """;
 
         System.out.println(applicationListRequest.page());
@@ -96,7 +101,8 @@ public class ApplicationListRepository {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("statuses",applicationListRequest.statuses())
                 .addValue("searchQuery", finalName)
-                .addValue("offset", (applicationListRequest.page() - 1) * 8);
+                .addValue("limit", PAGE_SIZE)
+                .addValue("offset", (applicationListRequest.page() - 1) * PAGE_SIZE);
 
         return namedParameterJdbcTemplate.query(query, params, new ApplicationListMapper());
     }
