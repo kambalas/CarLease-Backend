@@ -5,5 +5,5 @@ public enum ApplicationStatus {
     UPDATED,
     PENDING,
     NEW,
-    DECLINED
+    REJECTED
 }
