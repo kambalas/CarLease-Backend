@@ -17,15 +17,18 @@ public class StatusServiceImpl implements StatusService {
     public StatusServiceImpl(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
     }
-
-    @Override
-    public void updateStatusRead(long id) {
-        statusRepository.updateStatusRead(id);
-    }
+    static final boolean APPLICATIONISNOTOPENED = false;
+    static final boolean APPLICATIONISOPENED = true;
 
     @Override
     public void updateStatusById(StatusRequest statusRequest) {
         statusRepository.updateStatusById(convertToStatusDAORequest(statusRequest));
+        System.out.println(statusRequest.APPLICATIONSTATUS());
+        if (statusRequest.APPLICATIONSTATUS().equals("REJECTED")) {
+            statusRepository.updateStatusRead(statusRequest, APPLICATIONISOPENED);
+        } else {
+            statusRepository.updateStatusRead(statusRequest, APPLICATIONISNOTOPENED);
+        }
     }
 
     @Override

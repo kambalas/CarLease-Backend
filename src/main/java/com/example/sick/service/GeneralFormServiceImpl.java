@@ -39,7 +39,6 @@ import java.util.Optional;
 @Service
 public class GeneralFormServiceImpl implements GeneralFormService {
 
-
   ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 24, 36, 48, 60, 72));
   ArrayList<Integer> RESIDUAL_VALUE_PERCENTAGES = new ArrayList<>(Arrays.asList(0, 5, 10, 15, 20, 25, 30));
   String MAIL_SUBJECT = "TLizingas Loan";
