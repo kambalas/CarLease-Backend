@@ -1,6 +1,7 @@
 package com.example.sick.domain;
 
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +11,9 @@ import java.util.Collections;
 
 
 public record AuthenticationDAORequest(
+        @NotNull
         String username,
+        @NotNull
         String password,
         boolean isAccountNonExpired,
         boolean isAccountNonLocked,

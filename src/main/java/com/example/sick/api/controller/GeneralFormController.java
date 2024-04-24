@@ -1,10 +1,13 @@
 package com.example.sick.api.controller;
 
 import com.example.sick.api.model.exception.ApplicationNotFoundException;
+import com.example.sick.api.model.request.ApplicationListRequest;
 import com.example.sick.api.model.request.GeneralFormsRequest;
+import com.example.sick.api.model.response.ApplicationListResponse;
 import com.example.sick.api.model.response.GeneralAllFormsResponse;
 import com.example.sick.api.model.response.GeneralFormsResponse;
 import com.example.sick.service.GeneralFormServiceImpl;
+import com.example.sick.utils.ApplicationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +25,8 @@ import java.util.List;
 @RestController
 public class GeneralFormController {
 
-    GeneralFormServiceImpl generalFormsService;
+    private final GeneralFormServiceImpl generalFormsService;
 
-    @Autowired
     public GeneralFormController(GeneralFormServiceImpl generalFormsService) {
         this.generalFormsService = generalFormsService;
     }
@@ -49,4 +52,9 @@ public class GeneralFormController {
     }
 
 
+    @PostMapping("/admin/applications")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApplicationListResponse> sortApplications(@RequestBody ApplicationListRequest applicationListRequest) {
+        return generalFormsService.sortApplications(applicationListRequest);
+    }
 }

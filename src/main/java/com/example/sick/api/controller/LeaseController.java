@@ -22,7 +22,7 @@ import java.util.Optional;
 public class LeaseController {
     private final LeaseAndRatesRepository leaseAndRatesRepository;
 
-    GeneralFormService generalFormsService;
+    private final GeneralFormService generalFormsService;
 
     public LeaseController(LeaseAndRatesRepository leaseAndRatesRepository, GeneralFormService generalFormsService) {
       this.leaseAndRatesRepository = leaseAndRatesRepository;

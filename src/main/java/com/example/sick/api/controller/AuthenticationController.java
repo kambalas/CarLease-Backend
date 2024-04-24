@@ -30,7 +30,7 @@ public class AuthenticationController {
   ) {
     return authenticationService.register(request);
   }
-  @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com"})
+  @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com","http://localhost"})
   @PostMapping("/authenticate")
 
   public ResponseEntity<AuthenticationDAOResponse> authenticate(

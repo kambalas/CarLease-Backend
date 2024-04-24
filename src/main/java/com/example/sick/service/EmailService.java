@@ -41,7 +41,7 @@ public class EmailService implements EmailServiceInterface {
 
     private static final String TEST_EMAIL = "tlizingas@gmail.com";
     private final Gmail service;
-    MailRepository mailRepository;
+    private final MailRepository mailRepository;
 
     @Autowired
     public EmailService(MailRepository mailRepository) throws Exception {

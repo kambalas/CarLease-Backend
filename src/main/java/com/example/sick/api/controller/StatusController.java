@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class StatusController {
 
-    StatusServiceImpl statusService;
+    private final StatusServiceImpl statusService;
 
-    @Autowired
     public StatusController(StatusServiceImpl statusService) {
         this.statusService = statusService;
     }
