@@ -303,11 +303,11 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
     private void validatePersonalInformation(PersonalInformationDAORequest personalInformationDAORequest) {
 
-        if (personalInformationDAORequest.firstName() == null || personalInformationDAORequest.firstName().isEmpty() || !personalInformationDAORequest.firstName().toLowerCase().matches("[a-z\\-]+")) {
+        if (personalInformationDAORequest.firstName() == null || personalInformationDAORequest.firstName().isEmpty() || !personalInformationDAORequest.firstName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
             throw new IllegalArgumentException("Invalid first name.");
         }
 
-        if (personalInformationDAORequest.lastName() == null || personalInformationDAORequest.lastName().isEmpty() || !personalInformationDAORequest.lastName().toLowerCase().matches("[a-z\\-]+")) {
+        if (personalInformationDAORequest.lastName() == null || personalInformationDAORequest.lastName().isEmpty() || !personalInformationDAORequest.lastName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
             throw new IllegalArgumentException("Invalid last name.");
         }
 
