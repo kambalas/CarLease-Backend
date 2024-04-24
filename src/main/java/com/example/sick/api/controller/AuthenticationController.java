@@ -6,33 +6,35 @@ import com.example.sick.domain.AuthenticationDAOResponse;
 import com.example.sick.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-  private final AuthenticationService service;
+  private final AuthenticationService authenticationService;
 
 
   @PreAuthorize("hasRole('ROLE_Admin')")
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationDAOResponse> register(
+  @ResponseStatus(HttpStatus.OK)
+  public AuthenticationDAOResponse register(
           @RequestBody RegisterDAORequest request
   ) {
-    return new ResponseEntity<>(service.register(request), HttpStatus.OK);
+    return authenticationService.register(request);
   }
   @CrossOrigin(origins = {"http://localhost:4200", "https://ci-cd-angular.onrender.com","http://localhost"})
   @PostMapping("/authenticate")
-  public ResponseEntity<AuthenticationDAOResponse> authenticate(
+  @ResponseStatus(HttpStatus.OK)
+  public AuthenticationDAOResponse authenticate(
           @RequestBody AuthenticationDAORequest request
   ) {
-    return new ResponseEntity<>(service.authenticate(request), HttpStatus.OK);
+    return authenticationService.authenticate(request);
   }
 }

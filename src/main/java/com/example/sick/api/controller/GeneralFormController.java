@@ -56,5 +56,4 @@ public class GeneralFormController {
     public List<ApplicationListResponse> sortApplications(@RequestBody ApplicationListRequest applicationListRequest) {
         return generalFormsService.sortApplications(applicationListRequest);
     }
-
 }
