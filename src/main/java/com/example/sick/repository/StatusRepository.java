@@ -1,9 +1,8 @@
 package com.example.sick.repository;
 
-import com.example.sick.domain.PersonalInformationDAOResponse;
+import com.example.sick.api.model.request.StatusRequest;
 import com.example.sick.domain.StatusDAORequest;
 import com.example.sick.domain.StatusDAOResponse;
-import com.example.sick.repository.mapper.PersonalInformationMapper;
 import com.example.sick.repository.mapper.StatusMapper;
 import com.example.sick.utils.ApplicationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,14 +88,15 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public void updateStatusRead(long id) {
+    public void updateStatusRead(StatusRequest statusRequest, boolean isOpened) {
         String query = """
                 UPDATE STATUS
-                SET isOpened = true
+                SET isOpened = :isOpened
                 WHERE id = :id;
                 """;
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
+                .addValue("isOpened", isOpened)
+                .addValue("id", statusRequest.id());
         namedParameterJdbcTemplate.update(query, params);
     }
 
