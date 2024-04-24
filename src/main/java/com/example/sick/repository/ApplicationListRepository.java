@@ -60,7 +60,7 @@ public class ApplicationListRepository {
     }
 
     public List<ApplicationListDAOResponse> sortAndFilterBySearchQuery(ApplicationListDAORequest applicationListRequest) {
-        String finalName= applicationListRequest.searchQuery().toLowerCase().trim() + "%";
+        String finalName= "%" + applicationListRequest.searchQuery().toLowerCase().trim() + "%";
 
         String query = """
         SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
@@ -81,7 +81,7 @@ public class ApplicationListRepository {
     }
 
     public List<ApplicationListDAOResponse> sortAndFilterByStatusAndSearchQuery(ApplicationListDAORequest applicationListRequest) {
-        String finalName= applicationListRequest.searchQuery().toLowerCase().trim() + "%";
+        String finalName= "%" + applicationListRequest.searchQuery().toLowerCase().trim() + "%";
 
         String query = """
                 SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
