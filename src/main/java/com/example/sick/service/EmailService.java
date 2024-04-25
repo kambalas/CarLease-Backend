@@ -76,6 +76,9 @@ public class EmailService implements EmailServiceInterface {
         email.setSubject(subject);
         email.setText(message);
 
+        String htmlContent = message.replace("\n", "<br>");
+        email.setContent(htmlContent, "text/html; charset=UTF-8");
+
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);
         byte[] rawMessageBytes = buffer.toByteArray();
@@ -101,7 +104,7 @@ public class EmailService implements EmailServiceInterface {
             throw new IllegalArgumentException("Mail request must not be null");
         }
         try {
-            sendMail(mailRequest.mailRecipient(), "TLizingas Loan Application", mailRequest.mailText());
+            sendMail(mailRequest.mailRecipient(), mailRequest.mailSubject(), mailRequest.mailText());
             mailRepository.createMail(convertMailRequestIntoMailDAORequest(mailRequest));
         }
         catch (Exception e) {
