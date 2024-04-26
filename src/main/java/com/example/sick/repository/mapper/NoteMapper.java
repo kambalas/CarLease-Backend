@@ -13,7 +13,8 @@ public class NoteMapper implements RowMapper<NoteDAOResponse> {
         return new NoteDAOResponse(
                 resultSet.getLong("id"),
                 resultSet.getLong("application_id"),
-                resultSet.getString("note_text")
+                resultSet.getString("note_text"),
+                resultSet.getTimestamp("created_at").toLocalDateTime()
         );
     }
 }

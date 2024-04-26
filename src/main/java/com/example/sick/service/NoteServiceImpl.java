@@ -35,7 +35,7 @@ public class NoteServiceImpl implements NoteServiceInterface {
         if (noteRequest == null || noteRequest.noteText() == null || noteRequest.noteText().isEmpty()) {
             throw new IllegalArgumentException("Note request must not be null");
         }
-        String noteText = noteRequest.noteText() == null ? "" : noteRequest.noteText();
+        String noteText = noteRequest.noteText();
         NoteDAORequest daoRequest = new NoteDAORequest(noteRequest.applicationId(), noteText);
 
         noteRepository.createNote(daoRequest);
