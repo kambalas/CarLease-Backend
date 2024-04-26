@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class ApplicationListRepository {
 
-    final int PAGE_SIZE = 15;
+    final int PAGE_SIZE = 30;
     
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
