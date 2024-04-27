@@ -444,15 +444,15 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       return true;
     }
 
-    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.enginePower() >= 300) {
-      return !Objects.equals(leaseAndRatesRequest.model(), "Tesla");
-    }
-
     if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.engineSize() >= 2.5) {
       return true;
     }
 
-    return validIncome(personalInformationRequest.monthlyIncome(), leaseAndRatesRequest.monthlyPayment(), personalInformationRequest.numberOfChildren());
+    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.enginePower() >= 300) {
+      return !Objects.equals(leaseAndRatesRequest.model(), "Tesla");
+    }
+
+    return !isValidIncome(personalInformationRequest.monthlyIncome(), leaseAndRatesRequest.monthlyPayment(), personalInformationRequest.numberOfChildren());
   }
 
   private boolean isYoungerThan21(LocalDate birthDate) {
@@ -460,7 +460,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     return period.getYears() < 21;
   }
 
-  private boolean validIncome(BigDecimal monthlyIncome, BigDecimal monthlyPayment, int children) {
+  private boolean isValidIncome(BigDecimal monthlyIncome, BigDecimal monthlyPayment, int children) {
     return monthlyIncome.subtract(monthlyPayment).compareTo(BigDecimal.valueOf(600L * (1 + children))) >= 0;
   }
 }
