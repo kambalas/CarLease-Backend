@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -329,7 +330,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("PID must not be empty.");
     }
 
-    if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().isAfter(LocalDate.now())) {
+    if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().isAfter(LocalDateTime.now())) {
       throw new IllegalArgumentException("Invalid date of birth.");
     }
 
@@ -455,8 +456,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     return !isValidIncome(personalInformationRequest.monthlyIncome(), leaseAndRatesRequest.monthlyPayment(), personalInformationRequest.numberOfChildren());
   }
 
-  private boolean isYoungerThan21(LocalDate birthDate) {
-    Period period = Period.between(birthDate, LocalDate.now());
+  private boolean isYoungerThan21(LocalDateTime birthDate) {
+    Period period = Period.between(birthDate.toLocalDate(), LocalDate.now());
     return period.getYears() < 21;
   }
 
