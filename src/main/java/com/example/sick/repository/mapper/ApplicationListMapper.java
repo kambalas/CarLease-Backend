@@ -16,8 +16,8 @@ public class ApplicationListMapper implements RowMapper<ApplicationListDAORespon
                 resultSet.getString("lastName"),
                 resultSet.getBoolean("isOpened"),
                 ApplicationStatus.valueOf(resultSet.getString("status")),
-                resultSet.getTimestamp("updatedAt")
-
+                resultSet.getTimestamp("updatedAt"),
+                resultSet.getBoolean("isHighRisk")
         );
     }
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface StatusRepositoryInterface {
     void updateStatusRead(StatusRequest statusRequest, boolean isOpened);
 
-    void createStatus(long id);
+    void createStatus(long id, boolean isHighRisk);
 
     void updateStatusById(StatusDAORequest status);
 

@@ -25,14 +25,15 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public void createStatus(long id) {
+    public void createStatus(long id, boolean isHighRisk) {
         String query = """
-                INSERT INTO STATUS (id, status, isOpened, updatedAt, createdAt)
-                VALUES (:id, :status, false, now(), now())
+                INSERT INTO STATUS (id, status, isOpened, updatedAt, createdAt, isHighRisk)
+                VALUES (:id, :status, false, now(), now(), :isHighRisk)
                 """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id)
-                .addValue("status", ApplicationStatus.NEW.toString());
+                .addValue("status", ApplicationStatus.NEW.toString())
+                .addValue("isHighRisk", isHighRisk);
         namedParameterJdbcTemplate.update(query, params);
 
     }

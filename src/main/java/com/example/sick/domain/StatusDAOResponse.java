@@ -10,7 +10,8 @@ public record StatusDAOResponse(
         ApplicationStatus APPLICATIONSTATUS,
         Boolean isOpened,
         Timestamp updatedAt,
-        Timestamp createdAt
+        Timestamp createdAt,
+        Boolean isHighRisk
 
 ) {
 }

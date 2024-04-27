@@ -17,7 +17,8 @@ public class StatusMapper implements RowMapper<StatusDAOResponse> {
                 ApplicationStatus.valueOf(resultSet.getString("status")),
                 resultSet.getBoolean("isOpened"),
                 resultSet.getTimestamp("updatedAt"),
-                resultSet.getTimestamp("createdAt")
+                resultSet.getTimestamp("createdAt"),
+                resultSet.getBoolean("isHighRisk")
                 );
     }
 }

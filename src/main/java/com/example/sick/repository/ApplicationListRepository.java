@@ -28,7 +28,7 @@ public class ApplicationListRepository {
 
         String query = """
         SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
-               STATUS.isOpened, STATUS.status, STATUS.updatedAt
+               STATUS.isOpened, STATUS.status, STATUS.updatedAt, STATUS.isHighRisk
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         WHERE STATUS.status IN (:statuses)
@@ -46,7 +46,7 @@ public class ApplicationListRepository {
     public List<ApplicationListDAOResponse> sortApplicationsByTimestamp(ApplicationListDAORequest applicationListRequest) {
         String query = """
         SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
-               STATUS.isOpened, STATUS.status, STATUS.updatedAt
+               STATUS.isOpened, STATUS.status, STATUS.updatedAt, STATUS.isHighRisk
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         ORDER BY STATUS.updatedAt DESC
@@ -64,7 +64,7 @@ public class ApplicationListRepository {
 
         String query = """
         SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
-               STATUS.isOpened, STATUS.status, STATUS.updatedAt
+               STATUS.isOpened, STATUS.status, STATUS.updatedAt, STATUS.isHighRisk
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         WHERE (CONCAT(LOWER(PERSONAL_INFORMATION.firstName), ' ', LOWER(PERSONAL_INFORMATION.lastName)) LIKE :searchQuery
@@ -85,7 +85,7 @@ public class ApplicationListRepository {
 
         String query = """
                 SELECT PERSONAL_INFORMATION.id, PERSONAL_INFORMATION.firstName, PERSONAL_INFORMATION.lastName,
-                    STATUS.isOpened, STATUS.status, STATUS.updatedAt
+                    STATUS.isOpened, STATUS.status, STATUS.updatedAt, STATUS.isHighRisk
                 FROM PERSONAL_INFORMATION
                 JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
                 WHERE STATUS.status IN (:statuses)

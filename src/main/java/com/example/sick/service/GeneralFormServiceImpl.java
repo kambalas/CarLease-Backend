@@ -27,12 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import java.util.Date;
 import java.util.List;
 
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -120,10 +122,11 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException(e.getMessage());
     }
 
+    boolean isHighRisk = validateIfHighRisk(personalInformationDAORequest, leaseAndRatesDAORequest);
     long pid = personalInformationRepository.createPersonalInformation(personalInformationDAORequest);
     if (pid != 0) {
       leaseAndRatesRepository.createLeaseAndRate(leaseAndRatesDAORequest, pid);
-      statusRepository.createStatus(pid);
+      statusRepository.createStatus(pid, isHighRisk);
       try {
         emailService.sendMail(personalInformationDAORequest.email(), MAIL_SUBJECT, MAIL_BODY);
       } catch (Exception e) {
@@ -184,7 +187,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             applicationListDAOResponse.lastName(),
             applicationListDAOResponse.isOpened(),
             applicationListDAOResponse.status(),
-            applicationListDAOResponse.updatedAt()
+            applicationListDAOResponse.updatedAt(),
+            applicationListDAOResponse.isHighRisk()
     );
   }
 
@@ -298,7 +302,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             statusDAOResponse.APPLICATIONSTATUS(),
             statusDAOResponse.isOpened(),
             statusDAOResponse.updatedAt(),
-            statusDAOResponse.createdAt()
+            statusDAOResponse.createdAt(),
+            statusDAOResponse.isHighRisk()
     );
   }
 
@@ -324,7 +329,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("PID must not be empty.");
     }
 
-    if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().after(new Date())) {
+    if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().isAfter(LocalDate.now())) {
       throw new IllegalArgumentException("Invalid date of birth.");
     }
 
@@ -339,14 +344,14 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     }
 
 
-    List<String> europeanUnionCountries = List.of(
+    List<String> availableSelectionOptions = List.of(
             "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
             "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary",
             "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands",
-            "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
+            "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden", "Other"
     );
 
-    if (!europeanUnionCountries.contains(personalInformationDAORequest.citizenship())) {
+    if (!availableSelectionOptions.contains(personalInformationDAORequest.citizenship())) {
       throw new IllegalArgumentException("Invalid citizenship.");
     }
 
@@ -423,4 +428,39 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     }
   }
 
+  private boolean validateIfHighRisk(PersonalInformationDAORequest personalInformationRequest, LeaseAndRatesDAORequest leaseAndRatesRequest) {
+    List<String> europeanUnionCountries = List.of(
+            "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+            "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary",
+            "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands",
+            "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
+    );
+
+    if(!europeanUnionCountries.contains(personalInformationRequest.citizenship())){
+      return true;
+    }
+
+    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.carValue().compareTo(BigDecimal.valueOf(50000)) > 0){
+      return true;
+    }
+
+    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.enginePower() >= 300) {
+      return !Objects.equals(leaseAndRatesRequest.model(), "Tesla");
+    }
+
+    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.engineSize() >= 2.5) {
+      return true;
+    }
+
+    return validIncome(personalInformationRequest.monthlyIncome(), leaseAndRatesRequest.monthlyPayment(), personalInformationRequest.numberOfChildren());
+  }
+
+  private boolean isYoungerThan21(LocalDate birthDate) {
+    Period period = Period.between(birthDate, LocalDate.now());
+    return period.getYears() < 21;
+  }
+
+  private boolean validIncome(BigDecimal monthlyIncome, BigDecimal monthlyPayment, int children) {
+    return monthlyIncome.subtract(monthlyPayment).compareTo(BigDecimal.valueOf(600L * (1 + children))) >= 0;
+  }
 }

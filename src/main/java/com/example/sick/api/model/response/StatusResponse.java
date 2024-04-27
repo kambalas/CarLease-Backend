@@ -15,6 +15,8 @@ public record StatusResponse(
 
         Timestamp updatedAt,
 
-        Timestamp createdAt
+        Timestamp createdAt,
+
+        Boolean isHighRisk
 ) {
 }
