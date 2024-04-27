@@ -17,12 +17,9 @@ public class NoteAndEmailService {
     private final NoteRepository noteRepo;
     private final MailRepository mailRepo;
 
-
     public NoteAndEmailService(NoteRepository noteRepo, MailRepository mailRepo) {
         this.noteRepo = noteRepo;
         this.mailRepo = mailRepo;
-
-
     }
 
     public List<NoteDAOResponse> getNoteById(long id) {

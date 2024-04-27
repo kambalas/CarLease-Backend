@@ -36,18 +36,5 @@ public class NoteAndEmailServiceTest {
         List<NoteDAOResponse> responseNotes = service.getNoteById(1L);
         assertEquals(Collections.emptyList(), responseNotes);
     }
-//    @Test
-//    public void testGetNoteById_ReturnsList_WhenNoteFound() {
-//
-//        List<NoteDAOResponse> mockNotes = new ArrayList<>();
-//        mockNotes.add(new NoteDAOResponse(1L, 10L, "This is a test note", new Date()));
-//        when(noteRepo.selectNotesById(1L)).thenReturn(mockNotes);
-//
-//        List<NoteDAOResponse> responseNotes = service.getNoteById(1L);
-//
-//        assertEquals(1, responseNotes.size());
-//        assertEquals(mockNotes.getFirst().id(), responseNotes.getFirst().id());
-//    }
-
 
 }
