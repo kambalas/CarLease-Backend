@@ -42,20 +42,9 @@ import java.util.Optional;
 @Service
 public class GeneralFormServiceImpl implements GeneralFormService {
 
-  ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 24, 36, 48, 60, 72));
-  ArrayList<Integer> RESIDUAL_VALUE_PERCENTAGES = new ArrayList<>(Arrays.asList(0, 5, 10, 15, 20, 25, 30));
-  String MAIL_SUBJECT = "TLizingas Loan";
-  String MAIL_BODY = """
-          Hey there!,
-                          
-          Thank you for using the TLizingas loan calculator!
-          We've successfully received your application.
-                          
-          TLizingas staff will get in touch with you shortly!
-                          
-          Have a great day!
-          TLizingas Team
-          """;
+  private static final ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 24, 36, 48, 60, 72));
+  private static final ArrayList<Integer> RESIDUAL_VALUE_PERCENTAGES = new ArrayList<>(Arrays.asList(0, 5, 10, 15, 20, 25, 30));
+  private static final String MAIL_SUBJECT = "Car lease application #%s";
 
 
   private final LeaseAndRatesRepository leaseAndRatesRepository;
@@ -129,7 +118,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       leaseAndRatesRepository.createLeaseAndRate(leaseAndRatesDAORequest, pid);
       statusRepository.createStatus(pid, isHighRisk);
       try {
-        emailService.sendMail(personalInformationDAORequest.email(), MAIL_SUBJECT, MAIL_BODY);
+        emailService.sendMail(personalInformationDAORequest.email(), MAIL_SUBJECT.formatted(pid), setMailTemplate(generalFormsRequest));
       } catch (Exception e) {
         throw new IllegalArgumentException("Failed to send email: " + e.getMessage());
       }
@@ -154,6 +143,36 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       return applicationListRepository.sortAndFilterBySearchQuery(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     }
+  }
+
+  private String setMailTemplate(GeneralFormsRequest request) {
+    return """
+                Hi %s %s,
+
+                Just a quick email to let you know that we've received your car lease application and it's in good hands. We're excited to have you on board!
+
+                **Your car details**
+                - Make: %s
+                - Model: %s
+                - Year: %s
+                - Car value: %s €
+
+                Our team is currently working hard to process all the information and we'll be sure to keep you updated every step of the way.
+
+                If you have any questions or need assistance, feel free to reach out to our friendly customer support team during our working hours from 8 to 17.
+
+                Thank you for choosing Tarzan leasing. We appreciate your trust and can't wait to help make your dream car a reality!
+
+                Have a great day!
+
+                Best regards,
+                T-Leasing
+                """.formatted(request.personalInformationRequest().firstName(),
+            request.personalInformationRequest().lastName(),
+            request.leaseRequest().make(),
+            request.leaseRequest().model(),
+            request.leaseRequest().year(),
+            request.ratesRequest().carValue());
   }
 
 
