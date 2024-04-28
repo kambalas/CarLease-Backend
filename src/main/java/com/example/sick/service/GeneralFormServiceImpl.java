@@ -128,19 +128,22 @@ public class GeneralFormServiceImpl implements GeneralFormService {
   @Override
   public List<ApplicationListResponse> sortApplications(ApplicationListRequest applicationListRequest) {
     ApplicationListDAORequest applicationListDAORequest = convertRequestIntoDAORequest(applicationListRequest);
-    if (null == applicationListRequest.STATUS() && null == applicationListRequest.searchQuery()) {
-      return applicationListRepository.sortApplicationsByTimestamp(applicationListDAORequest).stream()
-              .map(this::convertApplicationListDAOResponseIntoResponse).toList();
-    }
-    if (null != applicationListRequest.STATUS() && null != applicationListRequest.searchQuery()) {
+
+    if (
+            (applicationListRequest.STATUS() != null && !applicationListRequest.STATUS().isEmpty())
+                    && (applicationListRequest.searchQuery() != null && !applicationListRequest.searchQuery().isEmpty())
+    ) {
       return applicationListRepository.sortAndFilterByStatusAndSearchQuery(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
-    }
-    if (null != applicationListRequest.STATUS() && null == applicationListRequest.searchQuery()) {
+
+    } else if (applicationListRequest.STATUS() != null && !applicationListRequest.STATUS().isEmpty()) {
       return applicationListRepository.sortAndFilterByStatus(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
-    } else {
+    } else if (applicationListRequest.searchQuery() != null && !applicationListRequest.searchQuery().isEmpty()) {
       return applicationListRepository.sortAndFilterBySearchQuery(applicationListDAORequest).stream()
+              .map(this::convertApplicationListDAOResponseIntoResponse).toList();
+    } else {
+      return applicationListRepository.sortApplicationsByTimestamp(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     }
   }
