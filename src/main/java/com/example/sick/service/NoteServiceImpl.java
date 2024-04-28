@@ -32,7 +32,7 @@ public class NoteServiceImpl implements NoteServiceInterface {
     @Override
     public void createNote(NoteRequest noteRequest) {
 
-        if (noteRequest == null || noteRequest.noteText() == null || noteRequest.noteText().isEmpty()) {
+        if (null == noteRequest|| null == noteRequest.noteText() || noteRequest.noteText().isEmpty()) {
             throw new IllegalArgumentException("Note request must not be null");
         }
         String noteText = noteRequest.noteText() == null ? "" : noteRequest.noteText();

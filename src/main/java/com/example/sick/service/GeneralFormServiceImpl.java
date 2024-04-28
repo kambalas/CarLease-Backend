@@ -139,15 +139,15 @@ public class GeneralFormServiceImpl implements GeneralFormService {
   @Override
   public List<ApplicationListResponse> sortApplications(ApplicationListRequest applicationListRequest) {
     ApplicationListDAORequest applicationListDAORequest = convertRequestIntoDAORequest(applicationListRequest);
-    if (applicationListRequest.STATUS() == null && applicationListRequest.searchQuery() == null) {
+    if (null == applicationListRequest.STATUS() &&  null == applicationListRequest.searchQuery()) {
       return applicationListRepository.sortApplicationsByTimestamp(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     }
-    if (applicationListRequest.STATUS() != null && applicationListRequest.searchQuery() != null) {
+    if (null != applicationListRequest.STATUS() && null != applicationListRequest.searchQuery()) {
       return applicationListRepository.sortAndFilterByStatusAndSearchQuery(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     }
-    if (applicationListRequest.STATUS() != null && applicationListRequest.searchQuery() == null) {
+    if (null != applicationListRequest.STATUS() && null == applicationListRequest.searchQuery()) {
       return applicationListRepository.sortAndFilterByStatus(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     } else {
@@ -194,12 +194,12 @@ public class GeneralFormServiceImpl implements GeneralFormService {
   }
 
   private ApplicationListDAORequest convertRequestIntoDAORequest(ApplicationListRequest applicationListRequest) {
-    if (applicationListRequest.searchQuery() != null && applicationListRequest.STATUS() != null) {
+    if (null != applicationListRequest.searchQuery() && null != applicationListRequest.STATUS()) {
       return new ApplicationListDAORequest(
               applicationListRequest.page(),
               applicationListRequest.STATUS().stream().map(ApplicationStatus::toString).toList(),
               applicationListRequest.searchQuery());
-    } else if (applicationListRequest.STATUS() != null) {
+    } else if (null != applicationListRequest.STATUS()) {
       return new ApplicationListDAORequest(
               applicationListRequest.page(),
               applicationListRequest.STATUS().stream().map(ApplicationStatus::toString).toList(),
@@ -310,27 +310,27 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
   private void validatePersonalInformation(PersonalInformationDAORequest personalInformationDAORequest) {
 
-    if (personalInformationDAORequest.firstName() == null || personalInformationDAORequest.firstName().isEmpty() || !personalInformationDAORequest.firstName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
+    if (null == personalInformationDAORequest.firstName() || personalInformationDAORequest.firstName().isEmpty() || !personalInformationDAORequest.firstName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
       throw new IllegalArgumentException("Invalid first name.");
     }
 
-    if (personalInformationDAORequest.lastName() == null || personalInformationDAORequest.lastName().isEmpty() || !personalInformationDAORequest.lastName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
+    if (null == personalInformationDAORequest.lastName() || personalInformationDAORequest.lastName().isEmpty() || !personalInformationDAORequest.lastName().toLowerCase().matches("^[A-Za-zÀ-ÖØ-öø-ſƀ-ƺǍ-ǥǦ-ǳǴ-ǵǶ-ȟȠ-ȯȱ-ȳȴ-ɏ-]\\D*$")) {
       throw new IllegalArgumentException("Invalid last name.");
     }
 
-    if (personalInformationDAORequest.email() == null || personalInformationDAORequest.email().isEmpty() || !personalInformationDAORequest.email().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+    if (null == personalInformationDAORequest.email() || personalInformationDAORequest.email().isEmpty() || !personalInformationDAORequest.email().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
       throw new IllegalArgumentException("Invalid email.");
     }
 
-    if (personalInformationDAORequest.phoneNumber() == null || personalInformationDAORequest.phoneNumber().isEmpty() || !personalInformationDAORequest.phoneNumber().matches("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$")) {
+    if (null == personalInformationDAORequest.phoneNumber() || personalInformationDAORequest.phoneNumber().isEmpty() || !personalInformationDAORequest.phoneNumber().matches("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$")) {
       throw new IllegalArgumentException("Invalid phone number.");
     }
 
-    if (personalInformationDAORequest.pid() == null || personalInformationDAORequest.pid().isEmpty()) {
+    if (null == personalInformationDAORequest.pid() || personalInformationDAORequest.pid().isEmpty()) {
       throw new IllegalArgumentException("PID must not be empty.");
     }
 
-    if (personalInformationDAORequest.dateOfBirth() == null || personalInformationDAORequest.dateOfBirth().isAfter(LocalDateTime.now())) {
+    if (null == personalInformationDAORequest.dateOfBirth() || personalInformationDAORequest.dateOfBirth().isAfter(LocalDateTime.now())) {
       throw new IllegalArgumentException("Invalid date of birth.");
     }
 
@@ -357,38 +357,38 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     }
 
 
-    if (personalInformationDAORequest.monthlyIncome() == null || personalInformationDAORequest.monthlyIncome().compareTo(BigDecimal.ZERO) < 0) {
+    if (null == personalInformationDAORequest.monthlyIncome() || personalInformationDAORequest.monthlyIncome().compareTo(BigDecimal.ZERO) < 0) {
       throw new IllegalArgumentException("Monthly income must be non-negative.");
     }
   }
 
   public void validateLeaseAndRatesResponse(LeaseAndRatesDAORequest request) {
 
-    if (request.make() == null || request.make().isEmpty()) {
+    if (null == request.make() || request.make().isEmpty()) {
       throw new IllegalArgumentException("Make cannot be null or empty.");
     }
 
-    if (request.model() == null || request.model().isEmpty()) {
+    if (null == request.model() || request.model().isEmpty()) {
       throw new IllegalArgumentException("Model cannot be null or empty.");
     }
 
-    if (request.modelVariant() == null || request.modelVariant().isEmpty()) {
+    if (null == request.modelVariant() || request.modelVariant().isEmpty()) {
       throw new IllegalArgumentException("Model variant cannot be null or empty.");
     }
 
-    if (request.year() == null || request.year().isEmpty() || !request.year().matches("\\d{4}")) {
+    if (null == request.year() || request.year().isEmpty() || !request.year().matches("\\d{4}")) {
       throw new IllegalArgumentException("Invalid year format. Year must be 4 digits.");
     }
 
-    if (request.fuelType() == null || request.fuelType().isEmpty()) {
+    if (null == request.fuelType() || request.fuelType().isEmpty()) {
       throw new IllegalArgumentException("Fuel type cannot be null or empty.");
     }
 
-    if (request.enginePower() == null || request.enginePower() < 0) {
+    if (null == request.enginePower() || request.enginePower() < 0) {
       throw new IllegalArgumentException("Engine power must be non-negative.");
     }
 
-    if (request.engineSize() == null || request.engineSize() < 0) {
+    if (null == request.engineSize() || request.engineSize() < 0) {
       throw new IllegalArgumentException("Engine size must be non-negative.");
     }
 
@@ -396,7 +396,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("Invalid URL.");
     }
     int MAX_BASE64_SIZE = 3*1024*1024*4/3;
-    if (request.offer() != null && request.offer().length() > MAX_BASE64_SIZE) {
+    if (null != request.offer() && request.offer().length() > MAX_BASE64_SIZE) {
       throw new IllegalArgumentException("File too large. Maximum size allowed is 3MB.");
     }
 
@@ -404,7 +404,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("Terms and confirmation must not be null.");
     }
 
-    if (request.carValue() == null || request.carValue().compareTo(BigDecimal.ZERO) <= 0) {
+    if (null == request.carValue() || request.carValue().compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Car value must be greater than zero.");
     }
 
@@ -412,7 +412,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("Lease period incorrect.");
     }
 
-    if (request.downPayment() == null || request.downPayment().compareTo(BigDecimal.ZERO) < 0) {
+    if (null == request.downPayment() || request.downPayment().compareTo(BigDecimal.ZERO) < 0) {
       throw new IllegalArgumentException("Down payment must be non-negative.");
     }
 
@@ -420,11 +420,11 @@ public class GeneralFormServiceImpl implements GeneralFormService {
       throw new IllegalArgumentException("Residual value is incorrect");
     }
 
-    if (request.monthlyPayment() == null || request.monthlyPayment().compareTo(BigDecimal.ZERO) <= 0) {
+    if (null == request.monthlyPayment() || request.monthlyPayment().compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Monthly payment must be greater than zero.");
     }
 
-    if (request.isEcoFriendly() == null) {
+    if (null == request.isEcoFriendly()) {
       throw new IllegalArgumentException("Eco-friendly status must not be null.");
     }
   }
