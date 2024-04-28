@@ -25,9 +25,9 @@ public class StatusServiceImpl implements StatusService {
         statusRepository.updateStatusById(convertToStatusDAORequest(statusRequest));
         System.out.println(statusRequest.APPLICATIONSTATUS());
         if (statusRequest.APPLICATIONSTATUS().equals("REJECTED")) {
-            statusRepository.updateStatusRead(statusRequest, APPLICATIONISOPENED);
+            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISOPENED);
         } else {
-            statusRepository.updateStatusRead(statusRequest, APPLICATIONISNOTOPENED);
+            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISNOTOPENED);
         }
     }
 
@@ -35,6 +35,11 @@ public class StatusServiceImpl implements StatusService {
     public StatusResponse getStatusById(long id) throws StatusNotFoundException {
         StatusDAOResponse statusDAOResponse = statusRepository.getStatusById(id).orElseThrow(() -> new StatusNotFoundException(id));
         return convertStatusDAOResponseToStatusResponse(statusDAOResponse);
+    }
+
+    @Override
+    public void updateStatusIsRead(long id) {
+        statusRepository.updateStatusRead(id, APPLICATIONISOPENED);
     }
 
     private StatusDAORequest convertToStatusDAORequest(StatusRequest statusRequest) {
