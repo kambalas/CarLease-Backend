@@ -139,7 +139,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
   @Override
   public List<ApplicationListResponse> sortApplications(ApplicationListRequest applicationListRequest) {
     ApplicationListDAORequest applicationListDAORequest = convertRequestIntoDAORequest(applicationListRequest);
-    if (null == applicationListRequest.STATUS() &&  null == applicationListRequest.searchQuery()) {
+    if (null == applicationListRequest.STATUS() && null == applicationListRequest.searchQuery()) {
       return applicationListRepository.sortApplicationsByTimestamp(applicationListDAORequest).stream()
               .map(this::convertApplicationListDAOResponseIntoResponse).toList();
     }
@@ -395,7 +395,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     if (!request.url().isEmpty() && !request.url().matches("^(http|https)://.*")) {
       throw new IllegalArgumentException("Invalid URL.");
     }
-    int MAX_BASE64_SIZE = 3*1024*1024*4/3;
+    int MAX_BASE64_SIZE = 3 * 1024 * 1024 * 4 / 3;
     if (null != request.offer() && request.offer().length() > MAX_BASE64_SIZE) {
       throw new IllegalArgumentException("File too large. Maximum size allowed is 3MB.");
     }
@@ -437,19 +437,19 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
     );
 
-    if(!europeanUnionCountries.contains(personalInformationRequest.citizenship())){
+    if (!europeanUnionCountries.contains(personalInformationRequest.citizenship())) {
       return true;
     }
 
-    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.carValue().compareTo(BigDecimal.valueOf(50000)) > 0){
+    if (isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.carValue().compareTo(BigDecimal.valueOf(50000)) > 0) {
       return true;
     }
 
-    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.engineSize() >= 2.5) {
+    if (isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.engineSize() >= 2.5) {
       return true;
     }
 
-    if(isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.enginePower() >= 300) {
+    if (isYoungerThan21(personalInformationRequest.dateOfBirth()) && leaseAndRatesRequest.enginePower() >= 300) {
       return !Objects.equals(leaseAndRatesRequest.model(), "Tesla");
     }
 
