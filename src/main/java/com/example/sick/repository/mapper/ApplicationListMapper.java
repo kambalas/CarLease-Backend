@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class ApplicationListMapper implements RowMapper<ApplicationListDAOResponse>{
     @Override
@@ -16,8 +17,8 @@ public class ApplicationListMapper implements RowMapper<ApplicationListDAORespon
                 resultSet.getString("lastName"),
                 resultSet.getBoolean("isOpened"),
                 ApplicationStatus.valueOf(resultSet.getString("status")),
-                resultSet.getTimestamp("updatedAt")
-
+                resultSet.getObject("updatedAt", LocalDateTime.class),
+                resultSet.getBoolean("isHighRisk")
         );
     }
 }

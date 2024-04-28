@@ -2,7 +2,7 @@ package com.example.sick.api.model.response;
 
 import com.example.sick.utils.ApplicationStatus;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public record ApplicationListResponse (
     long id,
@@ -10,5 +10,6 @@ public record ApplicationListResponse (
     String lastName,
     boolean isOpened,
     ApplicationStatus status,
-    Timestamp updatedAt
+    LocalDateTime updatedAt,
+    boolean isHighRisk
 ) {}
