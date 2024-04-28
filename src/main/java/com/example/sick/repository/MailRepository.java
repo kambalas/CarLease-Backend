@@ -22,7 +22,7 @@ public class MailRepository implements MailRepositoryInterface {
     @Override
     public List<MailDAOResponse> selectMailByApplicationId(long applicationId) {
         String query = """
-                    SELECT id, application_id, mail_text
+                    SELECT id, application_id, mail_text,created_at
                     FROM mail
                     WHERE application_id = :applicationId
                     ORDER BY created_at DESC
