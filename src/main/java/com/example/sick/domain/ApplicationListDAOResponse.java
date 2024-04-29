@@ -10,7 +10,7 @@ public record ApplicationListDAOResponse (
     String lastName,
     boolean isOpened,
     ApplicationStatus status,
-    LocalDateTime updatedAt,
+    LocalDateTime createdAt,
     boolean isHighRisk
 )
 {}
