@@ -210,7 +210,7 @@ public class GeneralFormServiceImpl implements GeneralFormService {
             applicationListDAOResponse.lastName(),
             applicationListDAOResponse.isOpened(),
             applicationListDAOResponse.status(),
-            applicationListDAOResponse.updatedAt(),
+            applicationListDAOResponse.createdAt(),
             applicationListDAOResponse.isHighRisk()
     );
   }
