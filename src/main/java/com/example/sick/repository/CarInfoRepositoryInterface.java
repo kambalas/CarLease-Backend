@@ -1,17 +1,18 @@
 package com.example.sick.repository;
 
-import com.example.sick.domain.EngineDataAPIResponse;
 import com.example.sick.domain.CarMakeAPIResponse;
 import com.example.sick.domain.CarModelAPIResponse;
-import org.springframework.http.HttpHeaders;
+import com.example.sick.domain.EngineDataAPIResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface CarInfoRepositoryInterface {
 
-    CarMakeAPIResponse getCarMakes(HttpHeaders headers);
+    CarMakeAPIResponse getCarMakes() throws JsonProcessingException;
 
-    CarModelAPIResponse getCarModels(HttpHeaders headers, String make);
+    CarModelAPIResponse getCarModels(String make) throws JsonProcessingException;
 
-    EngineDataAPIResponse getModelEngineData(HttpHeaders headers, int modelID);
+    EngineDataAPIResponse getModelEngineData(int modelID) throws JsonProcessingException;
 
-    EngineDataAPIResponse getVariantEngineData(HttpHeaders headers, int variantID);
+    EngineDataAPIResponse getVariantEngineData(int variantID) throws JsonProcessingException;
+
 }
