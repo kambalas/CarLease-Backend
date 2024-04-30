@@ -17,21 +17,29 @@ public class StatusServiceImpl implements StatusService {
     public StatusServiceImpl(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
     }
-
-    @Override
-    public void updateStatusRead(long id) {
-        statusRepository.updateStatusRead(id);
-    }
+    static final boolean APPLICATIONISNOTOPENED = false;
+    static final boolean APPLICATIONISOPENED = true;
 
     @Override
     public void updateStatusById(StatusRequest statusRequest) {
         statusRepository.updateStatusById(convertToStatusDAORequest(statusRequest));
+        System.out.println(statusRequest.APPLICATIONSTATUS());
+        if (statusRequest.APPLICATIONSTATUS().equals("REJECTED")) {
+            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISOPENED);
+        } else {
+            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISNOTOPENED);
+        }
     }
 
     @Override
     public StatusResponse getStatusById(long id) throws StatusNotFoundException {
         StatusDAOResponse statusDAOResponse = statusRepository.getStatusById(id).orElseThrow(() -> new StatusNotFoundException(id));
         return convertStatusDAOResponseToStatusResponse(statusDAOResponse);
+    }
+
+    @Override
+    public void updateStatusIsRead(long id) {
+        statusRepository.updateStatusRead(id, APPLICATIONISOPENED);
     }
 
     private StatusDAORequest convertToStatusDAORequest(StatusRequest statusRequest) {
@@ -44,7 +52,8 @@ public class StatusServiceImpl implements StatusService {
                 statusDAOResponse.APPLICATIONSTATUS(),
                 statusDAOResponse.isOpened(),
                 statusDAOResponse.updatedAt(),
-                statusDAOResponse.createdAt()
+                statusDAOResponse.createdAt(),
+                statusDAOResponse.isHighRisk()
         );
     }
 }

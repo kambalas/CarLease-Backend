@@ -1,9 +1,7 @@
 package com.example.sick.repository;
 
-import com.example.sick.domain.PersonalInformationDAOResponse;
 import com.example.sick.domain.StatusDAORequest;
 import com.example.sick.domain.StatusDAOResponse;
-import com.example.sick.repository.mapper.PersonalInformationMapper;
 import com.example.sick.repository.mapper.StatusMapper;
 import com.example.sick.utils.ApplicationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +24,15 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public void createStatus(long id) {
+    public void createStatus(long id, boolean isHighRisk) {
         String query = """
-                INSERT INTO STATUS (id, status, isOpened, updatedAt, createdAt)
-                VALUES (:id, :status, false, now(), now())
+                INSERT INTO STATUS (id, status, isOpened, updatedAt, createdAt, isHighRisk)
+                VALUES (:id, :status, false, now(), now(), :isHighRisk)
                 """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id)
-                .addValue("status", ApplicationStatus.NEW.toString());
+                .addValue("status", ApplicationStatus.NEW.toString())
+                .addValue("isHighRisk", isHighRisk);
         namedParameterJdbcTemplate.update(query, params);
 
     }
@@ -52,7 +51,7 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public Optional<StatusDAOResponse> getStatusById(long id){
+    public Optional<StatusDAOResponse> getStatusById(long id) {
         String query = """
                 SELECT *
                 FROM STATUS
@@ -66,7 +65,7 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public List<StatusDAOResponse> getAllStatus(){
+    public List<StatusDAOResponse> getAllStatus() {
         String query = """
                 SELECT *
                 FROM STATUS
@@ -75,12 +74,12 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public List<StatusDAOResponse> getAllStatusByPage(long pageNumber){
+    public List<StatusDAOResponse> getAllStatusByPage(long pageNumber) {
         String query = """
-            SELECT *
-            FROM STATUS
-            LIMIT 7 OFFSET :offset
-            """;
+                SELECT *
+                FROM STATUS
+                LIMIT 7 OFFSET :offset
+                """;
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("offset", (pageNumber - 1) * 7);
 
@@ -89,13 +88,14 @@ public class StatusRepository implements StatusRepositoryInterface {
     }
 
     @Override
-    public void updateStatusRead(long id) {
+    public void updateStatusRead(long id, boolean isOpened) {
         String query = """
                 UPDATE STATUS
-                SET isOpened = true
+                SET isOpened = :isOpened
                 WHERE id = :id;
                 """;
         SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("isOpened", isOpened)
                 .addValue("id", id);
         namedParameterJdbcTemplate.update(query, params);
     }

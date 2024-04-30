@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class NoteRepository implements NoteRepositoryInterface {
@@ -23,7 +22,7 @@ public class NoteRepository implements NoteRepositoryInterface {
     @Override
     public List<NoteDAOResponse> selectNotesById(long applicationId) {
         String query = """
-                    SELECT id, application_id, note_text
+                    SELECT id, application_id, note_text, created_at
                     FROM notes
                     WHERE application_id = :applicationId
                     ORDER BY created_at DESC;

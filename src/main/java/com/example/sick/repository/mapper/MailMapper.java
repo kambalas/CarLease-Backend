@@ -14,7 +14,8 @@ public class MailMapper implements RowMapper<MailDAOResponse> {
         return new MailDAOResponse(
                 resultSet.getLong("id"),
                 resultSet.getLong("application_id"),
-                resultSet.getString("mail_text")
+                resultSet.getString("mail_text"),
+                resultSet.getTimestamp("created_at").toLocalDateTime()
         );
     }
 }

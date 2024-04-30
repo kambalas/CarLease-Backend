@@ -16,17 +16,17 @@ import com.example.sick.service.EmailService;
 @RequestMapping("/admin")
 public class EmailController {
 
-    private final EmailService mailer;
+    private final EmailService emailService;
 
     public EmailController(EmailService emailService) throws Exception {
-        this.mailer = emailService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/email/{email}")
     @ResponseStatus(HttpStatus.OK)
     public String sendEmail(@PathVariable String email) {
         try {
-            mailer.sendMail(email, "TLizingas Loan", """
+            emailService.sendMail(email, "TLizingas Loan", """
                     Hey there!,
 
                     Thank you for using the TLizingas loan calculator!
@@ -47,12 +47,12 @@ public class EmailController {
     @PostMapping("/mail/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveEmail(@RequestBody MailRequest email) throws Exception {
-        mailer.saveMailHistory(email);
+        emailService.saveMailHistory(email);
     }
 
     @GetMapping("/mail/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
     public String getMailByApplicationId(@PathVariable long applicationId) {
-        return mailer.getMailByApplicationId(applicationId).toString();
+        return emailService.getMailByApplicationId(applicationId).toString();
     }
 }

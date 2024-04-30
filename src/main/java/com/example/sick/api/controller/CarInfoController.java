@@ -52,5 +52,4 @@ public class CarInfoController {
             throws TypeMismatchException, JsonProcessingException {
         return carInfoService.getVariantInfo(variant_id);
     }
-
 }
