@@ -146,33 +146,65 @@ public class GeneralFormServiceImpl implements GeneralFormService {
     }
 
     private String setMailTemplate(GeneralFormsRequest request) {
-        return """
-                Hi %s %s,
-
-                Just a quick email to let you know that we've received your car lease application and it's in good hands. We're excited to have you on board!
-
-                **Your car details**
-                - Make: %s
-                - Model: %s
-                - Year: %s
-                - Car value: %s €
-
-                Our team is currently working hard to process all the information and we'll be sure to keep you updated every step of the way.
-
-                If you have any questions or need assistance, feel free to reach out to our friendly customer support team during our working hours from 8 to 17.
-
-                Thank you for choosing Tarzan leasing. We appreciate your trust and can't wait to help make your dream car a reality!
-
-                Have a great day!
-
-                Best regards,
-                T-Leasing
+        if((request.personalInformationRequest().languagePref().equals("lithuania"))){
+            return """
+                    Sveiki %s %s,
+                    
+                    Norime pranešti, kad gavome jūsų automobilio lizingo paraišką. Labai džiaugiamės, jog pasirinkote mus!
+                    
+                    *Jūsų automobilio duomenys*
+                    - Gamintojas: %s
+                    - Modelis: %s
+                    - Metai: %s
+                    - Automobilio vertė: %s €
+                    
+                    Mūsų komanda aktyviai tvarko visas gautas paraiškas ir informuos Jus dėl lizingo paraiškos būsenos greitu metu.
+                    
+                    Jei turite kokių nors klausimų ar reikia pagalbos, kreipkitės į mūsų draugišką klientų aptarnavimo komandą darbo valandomis: nuo 8 iki 17 valandos.
+                    
+                    Dėkojame, kad pasirinkote Tarzano lizingą. Vertiname jūsų pasitikėjimą ir laukiame galimybės padėti įgyvendinti vieną iš jūsų svajonių!
+                    
+                    Geros dienos!
+                    
+                    Pagarbiai,
+                    Tarzano Lizingas
                 """.formatted(request.personalInformationRequest().firstName(),
-                request.personalInformationRequest().lastName(),
-                request.leaseRequest().make(),
-                request.leaseRequest().model(),
-                request.leaseRequest().year(),
-                request.ratesRequest().carValue());
+                    request.personalInformationRequest().lastName(),
+                    request.leaseRequest().make(),
+                    request.leaseRequest().model(),
+                    request.leaseRequest().year(),
+                    request.ratesRequest().carValue());
+        }
+        else {
+            return """
+                    Hi %s %s,
+
+                    Just a quick email to let you know that we've received your car lease application and it's in good hands. We're excited to have you on board!
+
+                    **Your car details**
+                    - Make: %s
+                    - Model: %s
+                    - Year: %s
+                    - Car value: %s €
+
+                    Our team is currently working hard to process all the information and we'll be sure to keep you updated every step of the way.
+
+                    If you have any questions or need assistance, feel free to reach out to our friendly customer support team during our working hours from 8 to 17.
+
+                    Thank you for choosing Tarzan leasing. We appreciate your trust and can't wait to help make your dream car a reality!
+
+                    Have a great day!
+
+                    Best regards,
+                    T-Leasing
+                    """.formatted(request.personalInformationRequest().firstName(),
+                    request.personalInformationRequest().lastName(),
+                    request.leaseRequest().make(),
+                    request.leaseRequest().model(),
+                    request.leaseRequest().year(),
+                    request.ratesRequest().carValue());
+        }
+
     }
 
 
@@ -242,7 +274,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
                 generalFormsRequest.personalInformationRequest().maritalStatus(),
                 generalFormsRequest.personalInformationRequest().numberOfChildren(),
                 generalFormsRequest.personalInformationRequest().citizenship(),
-                generalFormsRequest.personalInformationRequest().monthlyIncome()
+                generalFormsRequest.personalInformationRequest().monthlyIncome(),
+                generalFormsRequest.personalInformationRequest().languagePref()
         );
     }
 
@@ -281,7 +314,8 @@ public class GeneralFormServiceImpl implements GeneralFormService {
                 personalInformationDAOResponse.maritalStatus(),
                 personalInformationDAOResponse.numberOfChildren(),
                 personalInformationDAOResponse.citizenship(),
-                personalInformationDAOResponse.monthlyIncome());
+                personalInformationDAOResponse.monthlyIncome(),
+                personalInformationDAOResponse.languagePref());
     }
 
     private LeaseResponse convertDAOResponseIntoLeaseResponse(LeaseAndRatesDAOResponse leaseAndRatesDAOResponse) {

@@ -106,7 +106,8 @@ class GeneralFormServiceImplTest {
                         "single",
                         0,
                         "Lithuanian",
-                        BigDecimal.valueOf(1000)
+                        BigDecimal.valueOf(1000),
+                        "united-kingdom"
                 ));
         List<StatusDAOResponse> statusDaoResponses = List.of(
                 new StatusDAOResponse(
@@ -142,6 +143,7 @@ class GeneralFormServiceImplTest {
         assertEquals(0, generalAllFormsResponse.personalInformationResponse().numberOfChildren());
         assertEquals("Lithuanian", generalAllFormsResponse.personalInformationResponse().citizenship());
         assertEquals(BigDecimal.valueOf(1000), generalAllFormsResponse.personalInformationResponse().monthlyIncome());
+        assertEquals("united-kingdom", generalAllFormsResponse.personalInformationResponse().languagePref());
 
         assertEquals(1, generalAllFormsResponse.leaseResponse().id());
         assertEquals("bmw", generalAllFormsResponse.leaseResponse().make());
@@ -206,7 +208,8 @@ class GeneralFormServiceImplTest {
                         "single",
                         0,
                         "Lithuanian",
-                        BigDecimal.valueOf(1000)
+                        BigDecimal.valueOf(1000),
+                        "united-kingdom"
                 );
 
         when(leaseAndRatesRepository.getLeaseAndRateById(1)).thenReturn(Optional.of(leaseAndRatesDAOResponses));
@@ -226,6 +229,7 @@ class GeneralFormServiceImplTest {
         assertEquals(0, application.personalInformationResponse().numberOfChildren());
         assertEquals("Lithuanian", application.personalInformationResponse().citizenship());
         assertEquals(BigDecimal.valueOf(1000), application.personalInformationResponse().monthlyIncome());
+        assertEquals("united-kingdom", application.personalInformationResponse().languagePref());
 
         assertNotNull(application.leaseResponse());
         assertEquals(1, application.leaseResponse().id());
@@ -282,7 +286,8 @@ class GeneralFormServiceImplTest {
                         "Single",
                         0,
                         "Lithuania",
-                        BigDecimal.valueOf(1000))
+                        BigDecimal.valueOf(1000),
+                "united-kingdom")
                 ,
                 new LeaseRequest(
                         "bmw",
@@ -355,7 +360,8 @@ class GeneralFormServiceImplTest {
                         "Single",
                         0,
                         "ithuania",
-                        BigDecimal.valueOf(1000))
+                        BigDecimal.valueOf(1000),
+                "united-kingdom")
                 ,
                 new LeaseRequest(
                         "bmw",
@@ -400,7 +406,8 @@ class GeneralFormServiceImplTest {
                         "Single",
                         0,
                         "Lithuania",
-                        BigDecimal.valueOf(1000))
+                        BigDecimal.valueOf(1000),
+                        "united-kingdom")
                 ,
                 new LeaseRequest(
                         "bmw",
@@ -594,7 +601,8 @@ class GeneralFormServiceImplTest {
                 "single",
                 0,
                 "Lithuanian",
-                BigDecimal.valueOf(1000)
+                BigDecimal.valueOf(1000),
+                "united-kingdom"
         );
         when(personalInformationRepository.getPersonalInformationById(1)).thenReturn(Optional.of(personalInformationDAOResponse));
         PersonalInformationResponse response = generalFormService.getPersonalInformationById(1);
@@ -611,6 +619,7 @@ class GeneralFormServiceImplTest {
         assertEquals(0, response.numberOfChildren());
         assertEquals("Lithuanian", response.citizenship());
         assertEquals(BigDecimal.valueOf(1000), response.monthlyIncome());
+        assertEquals("united-kingdom", response.languagePref());
 
     }
 

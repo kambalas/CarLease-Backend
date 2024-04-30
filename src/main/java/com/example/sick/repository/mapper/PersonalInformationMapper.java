@@ -22,7 +22,8 @@ public class PersonalInformationMapper implements RowMapper<PersonalInformationD
                 resultSet.getString("maritalStatus"),
                 resultSet.getInt("numberOfChildren"),
                 resultSet.getString("citizenship"),
-                resultSet.getBigDecimal("monthlyIncome")
+                resultSet.getBigDecimal("monthlyIncome"),
+                resultSet.getString("languagePref")
         );
     }
 }

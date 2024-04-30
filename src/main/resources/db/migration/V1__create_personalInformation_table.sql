@@ -10,6 +10,7 @@ CREATE TABLE PERSONAL_INFORMATION (
                                      numberOfChildren INT,
                                      citizenship VARCHAR(100),
                                      monthlyIncome NUMERIC(100, 4),
+                                     languagePref VARCHAR(25),
                                      updatedAt timestamp DEFAULT now(),
                                      createdAt timestamp DEFAULT now(),
                                      PRIMARY KEY (id)
