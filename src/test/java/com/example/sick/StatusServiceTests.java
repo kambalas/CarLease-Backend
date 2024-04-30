@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +35,7 @@ public class StatusServiceTests {
 
     statusServiceImpl.updateStatusById(statusRequest);
 
-    verify(statusRepository).updateStatusById(any(StatusDAORequest.class));
+    verify(statusRepository).updateStatusById(new StatusDAORequest(1L, ApplicationStatus.REJECTED));
     verify(statusRepository).updateStatusRead(1L, true);
   }
 
