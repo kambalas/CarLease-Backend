@@ -11,6 +11,9 @@ import com.example.sick.api.model.request.StatusRequest;
 import com.example.sick.api.model.response.ApplicationListResponse;
 import com.example.sick.api.model.response.GeneralAllFormsResponse;
 import com.example.sick.api.model.response.GeneralFormsResponse;
+import com.example.sick.api.model.response.LeaseResponse;
+import com.example.sick.api.model.response.PersonalInformationResponse;
+import com.example.sick.api.model.response.RatesResponse;
 import com.example.sick.domain.ApplicationListDAORequest;
 import com.example.sick.domain.ApplicationListDAOResponse;
 import com.example.sick.domain.LeaseAndRatesDAOResponse;
@@ -308,27 +311,27 @@ class GeneralFormServiceImplTest {
                 mockGeneralFormsRequest.personalInformationRequest().email(),
                 "Car lease application #1",
                 """
-                Hi John Doe,
+                        Hi John Doe,
 
-                Just a quick email to let you know that we've received your car lease application and it's in good hands. We're excited to have you on board!
+                        Just a quick email to let you know that we've received your car lease application and it's in good hands. We're excited to have you on board!
 
-                **Your car details**
-                - Make: bmw
-                - Model: m3
-                - Year: 2021
-                - Car value: 10000 €
+                        **Your car details**
+                        - Make: bmw
+                        - Model: m3
+                        - Year: 2021
+                        - Car value: 10000 €
 
-                Our team is currently working hard to process all the information and we'll be sure to keep you updated every step of the way.
+                        Our team is currently working hard to process all the information and we'll be sure to keep you updated every step of the way.
 
-                If you have any questions or need assistance, feel free to reach out to our friendly customer support team during our working hours from 8 to 17.
+                        If you have any questions or need assistance, feel free to reach out to our friendly customer support team during our working hours from 8 to 17.
 
-                Thank you for choosing Tarzan leasing. We appreciate your trust and can't wait to help make your dream car a reality!
+                        Thank you for choosing Tarzan leasing. We appreciate your trust and can't wait to help make your dream car a reality!
 
-                Have a great day!
+                        Have a great day!
 
-                Best regards,
-                T-Leasing
-                """);
+                        Best regards,
+                        T-Leasing
+                        """);
 
     }
 
@@ -429,19 +432,19 @@ class GeneralFormServiceImplTest {
 
     @Test
     public void testSortApplications_Valid_StatusAndPageAndSearchQuery() {
-        List<ApplicationListDAOResponse> mockApplicationListDAOResponse = List.of( new ApplicationListDAOResponse(
-                1L,
-                "John",
-                "Doe",
-                false,
-                ApplicationStatus.NEW,
-                mockDateTime,
-                false
-        )
+        List<ApplicationListDAOResponse> mockApplicationListDAOResponse = List.of(new ApplicationListDAOResponse(
+                        1L,
+                        "John",
+                        "Doe",
+                        false,
+                        ApplicationStatus.NEW,
+                        mockDateTime,
+                        false
+                )
         );
-        when(applicationListRepository.sortAndFilterByStatusAndSearchQuery(new ApplicationListDAORequest(1L,List.of("NEW"),"John")))
+        when(applicationListRepository.sortAndFilterByStatusAndSearchQuery(new ApplicationListDAORequest(1L, List.of("NEW"), "John")))
                 .thenReturn(mockApplicationListDAOResponse);
-        List<ApplicationListResponse> applicationListResponses = generalFormService.sortApplications(new ApplicationListRequest(1L, List.of(ApplicationStatus.NEW),"John"));
+        List<ApplicationListResponse> applicationListResponses = generalFormService.sortApplications(new ApplicationListRequest(1L, List.of(ApplicationStatus.NEW), "John"));
         assertNotNull(applicationListResponses);
         assertFalse(applicationListResponses.isEmpty());
         assertEquals(1, applicationListResponses.size());
@@ -452,10 +455,264 @@ class GeneralFormServiceImplTest {
         assertEquals("John", applicationListResponse.firstName());
         assertEquals("Doe", applicationListResponse.lastName());
         assertFalse(applicationListResponse.isOpened());
-        assertEquals(ApplicationStatus.NEW,applicationListResponse.status());
-        assertEquals(mockDateTime,applicationListResponse.createdAt());
+        assertEquals(ApplicationStatus.NEW, applicationListResponse.status());
+        assertEquals(mockDateTime, applicationListResponse.createdAt());
         assertFalse(applicationListResponse.isHighRisk());
 
+    }
+
+    @Test
+    public void testSortApplications_Valid_StatusAndPage() {
+        List<ApplicationListDAOResponse> mockApplicationListDAOResponse = List.of(new ApplicationListDAOResponse(
+                        1L,
+                        "John",
+                        "Doe",
+                        false,
+                        ApplicationStatus.NEW,
+                        mockDateTime,
+                        false
+                ),
+                new ApplicationListDAOResponse(
+                        2L,
+                        "Jane",
+                        "Doe",
+                        false,
+                        ApplicationStatus.REJECTED,
+                        mockDateTime,
+                        false
+                )
+        );
+        when(applicationListRepository.sortAndFilterByStatus(new ApplicationListDAORequest(1L, List.of("NEW", "REJECTED"), null)))
+                .thenReturn(mockApplicationListDAOResponse);
+        List<ApplicationListResponse> applicationListResponses = generalFormService.sortApplications(new ApplicationListRequest(1L, List.of(ApplicationStatus.NEW, ApplicationStatus.REJECTED), null));
+        assertNotNull(applicationListResponses);
+        assertFalse(applicationListResponses.isEmpty());
+        assertEquals(2, applicationListResponses.size());
+
+        ApplicationListResponse applicationListResponse = applicationListResponses.getFirst();
+
+        assertEquals(1, applicationListResponse.id());
+        assertEquals("John", applicationListResponse.firstName());
+        assertEquals("Doe", applicationListResponse.lastName());
+        assertFalse(applicationListResponse.isOpened());
+        assertEquals(ApplicationStatus.NEW, applicationListResponse.status());
+        assertEquals(mockDateTime, applicationListResponse.createdAt());
+        assertFalse(applicationListResponse.isHighRisk());
+
+    }
+
+    @Test
+    public void testSortApplications_Valid_SearchAndPage() {
+        List<ApplicationListDAOResponse> mockApplicationListDAOResponse = List.of(new ApplicationListDAOResponse(
+                        1L,
+                        "John",
+                        "Doe",
+                        false,
+                        ApplicationStatus.NEW,
+                        mockDateTime,
+                        false
+                ),
+                new ApplicationListDAOResponse(
+                        2L,
+                        "Jane",
+                        "Doe",
+                        false,
+                        ApplicationStatus.REJECTED,
+                        mockDateTime,
+                        false
+                )
+        );
+        when(applicationListRepository.sortAndFilterBySearchQuery(new ApplicationListDAORequest(1L, null, "J")))
+                .thenReturn(mockApplicationListDAOResponse);
+        List<ApplicationListResponse> applicationListResponses = generalFormService.sortApplications(new ApplicationListRequest(1L, null, "J"));
+        assertNotNull(applicationListResponses);
+        assertFalse(applicationListResponses.isEmpty());
+        assertEquals(2, applicationListResponses.size());
+
+        ApplicationListResponse applicationListResponse = applicationListResponses.getFirst();
+
+        assertEquals(1, applicationListResponse.id());
+        assertEquals("John", applicationListResponse.firstName());
+        assertEquals("Doe", applicationListResponse.lastName());
+        assertFalse(applicationListResponse.isOpened());
+        assertEquals(ApplicationStatus.NEW, applicationListResponse.status());
+        assertEquals(mockDateTime, applicationListResponse.createdAt());
+        assertFalse(applicationListResponse.isHighRisk());
+
+    }
+
+    @Test
+    public void testSortApplications_Valid_Page() {
+        List<ApplicationListDAOResponse> mockApplicationListDAOResponse = List.of(new ApplicationListDAOResponse(
+                        1L,
+                        "John",
+                        "Doe",
+                        false,
+                        ApplicationStatus.NEW,
+                        mockDateTime,
+                        false
+                ),
+                new ApplicationListDAOResponse(
+                        2L,
+                        "Jane",
+                        "Doe",
+                        false,
+                        ApplicationStatus.REJECTED,
+                        mockDateTime,
+                        false
+                )
+        );
+        when(applicationListRepository.sortApplicationsByTimestamp(new ApplicationListDAORequest(1L, null, null)))
+                .thenReturn(mockApplicationListDAOResponse);
+        List<ApplicationListResponse> applicationListResponses = generalFormService.sortApplications(new ApplicationListRequest(1L, null, null));
+        assertNotNull(applicationListResponses);
+        assertFalse(applicationListResponses.isEmpty());
+        assertEquals(2, applicationListResponses.size());
+
+        ApplicationListResponse applicationListResponse = applicationListResponses.getFirst();
+
+        assertEquals(1, applicationListResponse.id());
+        assertEquals("John", applicationListResponse.firstName());
+        assertEquals("Doe", applicationListResponse.lastName());
+        assertFalse(applicationListResponse.isOpened());
+        assertEquals(ApplicationStatus.NEW, applicationListResponse.status());
+        assertEquals(mockDateTime, applicationListResponse.createdAt());
+        assertFalse(applicationListResponse.isHighRisk());
+
+    }
+
+    @Test
+    public void testGetPersonalInformationById_Found() throws ApplicationNotFoundException{
+        PersonalInformationDAOResponse personalInformationDAOResponse = new PersonalInformationDAOResponse(
+                1L,
+                "John",
+                "Doe",
+                "egerdvila@gmail.com",
+                "+37060000000",
+                "123456789",
+                mockDateTime,
+                "single",
+                0,
+                "Lithuanian",
+                BigDecimal.valueOf(1000)
+        );
+        when(personalInformationRepository.getPersonalInformationById(1)).thenReturn(Optional.of(personalInformationDAOResponse));
+        PersonalInformationResponse response = generalFormService.getPersonalInformationById(1);
+
+        assertNotNull(response);
+        assertEquals(1, response.id());
+        assertEquals("John", response.firstName());
+        assertEquals("Doe", response.lastName());
+        assertEquals("egerdvila@gmail.com", response.email());
+        assertEquals("+37060000000", response.phoneNumber());
+        assertEquals("123456789", response.pid());
+        assertEquals(mockDateTime, response.dateOfBirth());
+        assertEquals("single", response.maritalStatus());
+        assertEquals(0, response.numberOfChildren());
+        assertEquals("Lithuanian", response.citizenship());
+        assertEquals(BigDecimal.valueOf(1000), response.monthlyIncome());
+
+    }
+
+    @Test
+    public void testGetPersonalInformationById_NotFound(){
+        when(personalInformationRepository.getPersonalInformationById(1)).thenReturn(Optional.empty());
+        ApplicationNotFoundException applicationNotFoundException =
+                assertThrows(ApplicationNotFoundException.class, () -> generalFormService.getPersonalInformationById(1));
+        assertEquals("Cannot find a task with id: 1", applicationNotFoundException.getMessage());
+
+    }
+
+    @Test
+    public void testGetLeaseInformationById_Found() throws ApplicationNotFoundException{
+        LeaseAndRatesDAOResponse leaseAndRatesDAOResponse = new LeaseAndRatesDAOResponse(
+                1L,
+                "bmw",
+                "m3",
+                "competition",
+                "2021",
+                "diesel",
+                401.0,
+                5.4,
+                "www.google.com",
+                null,
+                true,
+                true,
+                BigDecimal.valueOf(10000),
+                24,
+                BigDecimal.valueOf(4000),
+                5,
+                true,
+                BigDecimal.valueOf(1000)
+        );
+        when(leaseAndRatesRepository.getLeaseAndRateById(1)).thenReturn(Optional.of(leaseAndRatesDAOResponse));
+        LeaseResponse response = generalFormService.getLeaseInformationById(1);
+
+        assertNotNull(response);
+        assertEquals(1, response.id());
+        assertEquals("bmw", response.make());
+        assertEquals("m3", response.model());
+        assertEquals("competition", response.modelVariant());
+        assertEquals("2021", response.year());
+        assertEquals("diesel", response.fuelType());
+        assertEquals(401.0, response.enginePower());
+        assertEquals(5.4, response.engineSize());
+        assertEquals("www.google.com", response.url());
+        assertNull(response.offer());
+    }
+
+    @Test
+    public void testGetLeaseInformationById_NotFound(){
+        when(leaseAndRatesRepository.getLeaseAndRateById(1)).thenReturn(Optional.empty());
+        ApplicationNotFoundException applicationNotFoundException =
+                assertThrows(ApplicationNotFoundException.class, () -> generalFormService.getLeaseInformationById(1));
+        assertEquals("Cannot find a task with id: 1", applicationNotFoundException.getMessage());
+
+    }
+
+    @Test
+    public void testGetRatesInformationById_Found() throws ApplicationNotFoundException{
+        LeaseAndRatesDAOResponse leaseAndRatesDAOResponse = new LeaseAndRatesDAOResponse(
+                1L,
+                "bmw",
+                "m3",
+                "competition",
+                "2021",
+                "diesel",
+                401.0,
+                5.4,
+                "www.google.com",
+                null,
+                true,
+                true,
+                BigDecimal.valueOf(10000),
+                24,
+                BigDecimal.valueOf(4000),
+                5,
+                true,
+                BigDecimal.valueOf(1000)
+        );
+        when(leaseAndRatesRepository.getLeaseAndRateById(1)).thenReturn(Optional.of(leaseAndRatesDAOResponse));
+
+        RatesResponse response = generalFormService.getRatesInformationById(1);
+
+        assertNotNull(response);
+        assertEquals(1, response.id());
+        assertEquals(BigDecimal.valueOf(10000), response.carValue());
+        assertEquals(24, response.period());
+        assertEquals(BigDecimal.valueOf(4000), response.downPayment());
+        assertEquals(5, response.residualValuePercentage());
+        assertTrue(response.isEcoFriendly());
+        assertEquals(BigDecimal.valueOf(1000), response.monthlyPayment());
+
+    }
+
+    @Test
+    public void testGetRatesInformationById_NotFound(){
+        when(leaseAndRatesRepository.getLeaseAndRateById(1)).thenReturn(Optional.empty());
+        ApplicationNotFoundException applicationNotFoundException =
+                assertThrows(ApplicationNotFoundException.class, () -> generalFormService.getRatesInformationById(1));
+        assertEquals("Cannot find a task with id: 1", applicationNotFoundException.getMessage());
     }
 
 }
