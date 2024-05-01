@@ -14,7 +14,8 @@ public record PersonalInformationDAORequest(
     String maritalStatus,
     int numberOfChildren,
     String citizenship,
-    BigDecimal monthlyIncome
+    BigDecimal monthlyIncome,
+    String languagePref
 
 ) {
 }

@@ -1,9 +1,7 @@
 package com.example.sick.repository;
 
-import com.example.sick.domain.LeaseAndRatesDAOResponse;
 import com.example.sick.domain.PersonalInformationDAORequest;
 import com.example.sick.domain.PersonalInformationDAOResponse;
-import com.example.sick.repository.mapper.LeaseAndRatesMapper;
 import com.example.sick.repository.mapper.PersonalInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -64,8 +62,8 @@ public class PersonalInformationRepository implements PersonalInformationReposit
 
     public long createPersonalInformation(PersonalInformationDAORequest personalInformationDAORequest) {
         String query = """
-                INSERT INTO PERSONAL_INFORMATION (firstName, lastName, email, phoneNumber, pid, dateOfBirth, maritalStatus, numberOfChildren, citizenship, monthlyIncome)
-                VALUES (:firstName, :lastName, :email, :phoneNumber, :pid, :dateOfBirth, :maritalStatus, :numberOfChildren, :citizenship, :monthlyIncome)
+                INSERT INTO PERSONAL_INFORMATION (firstName, lastName, email, phoneNumber, pid, dateOfBirth, maritalStatus, numberOfChildren, citizenship, monthlyIncome, languagePref)
+                VALUES (:firstName, :lastName, :email, :phoneNumber, :pid, :dateOfBirth, :maritalStatus, :numberOfChildren, :citizenship, :monthlyIncome, :languagePref)
                 RETURNING id
                 """;
 
@@ -79,7 +77,8 @@ public class PersonalInformationRepository implements PersonalInformationReposit
                 .addValue("maritalStatus", personalInformationDAORequest.maritalStatus())
                 .addValue("numberOfChildren", personalInformationDAORequest.numberOfChildren())
                 .addValue("citizenship", personalInformationDAORequest.citizenship())
-                .addValue("monthlyIncome", personalInformationDAORequest.monthlyIncome());
+                .addValue("monthlyIncome", personalInformationDAORequest.monthlyIncome())
+                .addValue("languagePref", personalInformationDAORequest.languagePref());
 
         return namedParameterJdbcTemplate.queryForObject(query, params, Long.class);
     }
