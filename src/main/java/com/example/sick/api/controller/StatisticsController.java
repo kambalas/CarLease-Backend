@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/statistics")
+@RequestMapping("/admin/statistics")
 public class StatisticsController {
 
     private final StatisticServiceImpl statisticService;
