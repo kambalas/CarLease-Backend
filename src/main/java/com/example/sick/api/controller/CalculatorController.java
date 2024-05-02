@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/car-leasing")
-@CrossOrigin("*")
+@RequestMapping("/user")
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
