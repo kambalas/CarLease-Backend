@@ -10,7 +10,7 @@ public class WebSecurity implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**") // Allows CORS requests to all endpoints
-            .allowedOrigins("https://ci-cd-angular.onrender.com", "http://localhost:4200")
+            .allowedOrigins("https://frontend-nh8y.onrender.com", "http://localhost:4200")
             .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS")
             .allowedHeaders("*");
   }
