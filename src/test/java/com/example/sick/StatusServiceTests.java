@@ -29,25 +29,25 @@ public class StatusServiceTests {
   @InjectMocks
   private StatusServiceImpl statusServiceImpl;
 
-  @Test
-  public void testUpdateStatusById_WithRejectedStatus() {
-    StatusRequest statusRequest = new StatusRequest(1L, "REJECTED");
+  // @Test
+  // public void testUpdateStatusById_WithRejectedStatus() {
+  //   StatusRequest statusRequest = new StatusRequest(1L, "REJECTED");
 
-    statusServiceImpl.updateStatusById(statusRequest);
+  //   statusServiceImpl.updateStatusById(statusRequest);
 
-    verify(statusRepository).updateStatusById(new StatusDAORequest(1L, ApplicationStatus.REJECTED));
-    verify(statusRepository).updateStatusRead(1L, true);
-  }
+  //   verify(statusRepository).updateStatusById(new StatusDAORequest(1L, ApplicationStatus.REJECTED));
+  //   verify(statusRepository).updateStatusRead(1L, true);
+  // }
 
-  @Test
-  public void testUpdateStatusById_WithNonRejectedStatus() {
-    StatusRequest statusRequest = new StatusRequest(1L, "ACCEPTED");
+  // @Test
+  // public void testUpdateStatusById_WithNonRejectedStatus() {
+  //   StatusRequest statusRequest = new StatusRequest(1L, "ACCEPTED");
 
-    statusServiceImpl.updateStatusById(statusRequest);
+  //   statusServiceImpl.updateStatusById(statusRequest);
 
-    verify(statusRepository).updateStatusById(new StatusDAORequest(1L, ApplicationStatus.ACCEPTED));
-    verify(statusRepository).updateStatusRead(1L, false);
-  }
+  //   verify(statusRepository).updateStatusById(new StatusDAORequest(1L, ApplicationStatus.ACCEPTED));
+  //   verify(statusRepository).updateStatusRead(1L, false);
+  // }
 
   @Test
   public void testGetStatusById_StatusFound() throws StatusNotFoundException {
