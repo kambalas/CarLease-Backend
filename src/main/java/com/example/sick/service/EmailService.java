@@ -44,7 +44,7 @@ public class EmailService implements EmailServiceInterface {
     private final MailRepository mailRepository;
 
     @Autowired
-    public EmailService(MailRepository mailRepository) throws Exception {
+    public EmailService(MailRepository mailRepository) throws Exception{
         this.mailRepository = mailRepository;
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
