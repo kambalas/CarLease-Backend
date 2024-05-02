@@ -24,11 +24,6 @@ public class StatusServiceImpl implements StatusService {
     public void updateStatusById(StatusRequest statusRequest) {
         statusRepository.updateStatusById(convertToStatusDAORequest(statusRequest));
         System.out.println(statusRequest.APPLICATIONSTATUS());
-        if (statusRequest.APPLICATIONSTATUS().equals("REJECTED")) {
-            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISOPENED);
-        } else {
-            statusRepository.updateStatusRead(statusRequest.id(), APPLICATIONISNOTOPENED);
-        }
     }
 
     @Override
