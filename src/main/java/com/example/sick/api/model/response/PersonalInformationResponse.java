@@ -15,7 +15,8 @@ public record PersonalInformationResponse(
         String maritalStatus,
         int numberOfChildren,
         String citizenship,
-        BigDecimal monthlyIncome
+        BigDecimal monthlyIncome,
+        String languagePref
 
 ) {
 }
