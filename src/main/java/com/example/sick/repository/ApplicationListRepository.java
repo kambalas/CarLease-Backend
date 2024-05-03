@@ -32,7 +32,7 @@ public class ApplicationListRepository {
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         WHERE STATUS.status IN (:statuses)
-        ORDER BY STATUS.updatedAt DESC
+        ORDER BY STATUS.createdAt DESC
         LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
@@ -49,7 +49,7 @@ public class ApplicationListRepository {
                STATUS.isOpened, STATUS.status, STATUS.createdAt, STATUS.isHighRisk
         FROM PERSONAL_INFORMATION
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
-        ORDER BY STATUS.updatedAt DESC
+        ORDER BY STATUS.createdAt DESC
         LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
@@ -69,7 +69,7 @@ public class ApplicationListRepository {
         JOIN STATUS ON PERSONAL_INFORMATION.id = STATUS.id
         WHERE (CONCAT(LOWER(PERSONAL_INFORMATION.firstName), ' ', LOWER(PERSONAL_INFORMATION.lastName)) LIKE :searchQuery
                     OR CAST(PERSONAL_INFORMATION.id AS TEXT) LIKE :searchQuery)
-        ORDER BY STATUS.updatedAt DESC
+        ORDER BY STATUS.createdAt DESC
         LIMIT :limit OFFSET :offset
         """;
         SqlParameterSource params = new MapSqlParameterSource()
@@ -91,7 +91,7 @@ public class ApplicationListRepository {
                 WHERE STATUS.status IN (:statuses)
                 AND (CONCAT(LOWER(PERSONAL_INFORMATION.firstName), ' ', LOWER(PERSONAL_INFORMATION.lastName)) LIKE :searchQuery
                     OR CAST(PERSONAL_INFORMATION.id AS TEXT) LIKE :searchQuery)
-                ORDER BY STATUS.updatedAt DESC
+                ORDER BY STATUS.createdAt DESC
                 LIMIT :limit OFFSET :offset
                   """;
 
