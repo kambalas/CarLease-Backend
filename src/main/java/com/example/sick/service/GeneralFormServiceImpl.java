@@ -39,7 +39,7 @@ import java.util.Optional;
 @Service
 public class GeneralFormServiceImpl implements GeneralFormService {
 
-    private static final ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 24, 36, 48, 60, 72));
+    private static final ArrayList<Integer> PERIOD_VALUE = new ArrayList<>(Arrays.asList(3, 4, 5, 6, 12, 18, 24, 36, 48, 60, 72));
     private static final ArrayList<Integer> RESIDUAL_VALUE_PERCENTAGES = new ArrayList<>(Arrays.asList(0, 5, 10, 15, 20, 25, 30));
     private static final String MAIL_SUBJECT = "Car lease application #%s";
 
@@ -423,10 +423,6 @@ public class GeneralFormServiceImpl implements GeneralFormService {
 
         if (null == request.model() || request.model().isEmpty()) {
             throw new IllegalArgumentException("Model cannot be null or empty.");
-        }
-
-        if (null == request.modelVariant() || request.modelVariant().isEmpty()) {
-            throw new IllegalArgumentException("Model variant cannot be null or empty.");
         }
 
         if (null == request.year() || request.year().isEmpty() || !request.year().matches("\\d{4}")) {
