@@ -83,22 +83,19 @@ public class StatisticRepository implements StatisticRepositoryInterface {
     public AcceptedApplicationDAOResponse countAcceptedApplicationsTotalSum() {
         String query = """
                 SELECT
-                    EXTRACT(YEAR FROM date_trunc('year', S.createdAt)) AS leaseYear,
-                    SUM(CASE
-                            WHEN EXTRACT(YEAR FROM date_trunc('year', S.createdAt)) = EXTRACT(YEAR FROM CURRENT_DATE)
-                            THEN L.monthlyPayment * L.period
-                            ELSE 0
-                        END) AS thisYearTotalPayments,
-                    SUM(CASE
-                            WHEN EXTRACT(YEAR FROM date_trunc('year', S.createdAt)) = EXTRACT(YEAR FROM CURRENT_DATE) - 1
-                            THEN L.monthlyPayment * L.period
-                            ELSE 0
-                        END) AS lastYearTotalPayments
-                FROM LEASE L
-                JOIN STATUS S ON L.id = S.id
-                WHERE S.status = 'ACCEPTED'
-                GROUP BY leaseYear
-                ORDER BY leaseYear DESC;
+                     SUM(CASE
+                             WHEN EXTRACT(YEAR FROM S.createdAt) = EXTRACT(YEAR FROM CURRENT_DATE)
+                             THEN L.monthlyPayment * L.period
+                             ELSE 0
+                         END) AS thisYearTotalPayments,
+                     SUM(CASE
+                             WHEN EXTRACT(YEAR FROM S.createdAt) = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+                             THEN L.monthlyPayment * L.period
+                             ELSE 0
+                         END) AS lastYearTotalPayments
+                 FROM LEASE L
+                 JOIN STATUS S ON L.id = S.id
+                 WHERE S.status = 'ACCEPTED';
                 """;
         return namedParameterJdbcTemplate.queryForObject(query, new MapSqlParameterSource(), new AcceptedApplicationMapper());
     }
