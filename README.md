@@ -22,4 +22,3 @@ A comprehensive Spring Boot application designed to streamline and manage car lo
 - **Docker:** For containerization and easy deployment.
 - **JUnit:** For unit testing.
 
-## Getting Started
