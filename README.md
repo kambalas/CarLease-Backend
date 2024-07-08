@@ -19,6 +19,5 @@ A comprehensive Spring Boot application designed to streamline and manage car lo
 - **Hibernate:** As the ORM tool for managing database operations.
 - **PostgreSQL:** As the database for development and production environments.
 - **Gradle:** For project build and dependency management.
-- **Docker:** For containerization and easy deployment.
 - **JUnit:** For unit testing.
 
